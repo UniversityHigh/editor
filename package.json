@@ -1,0 +1,22 @@
+{
+  "name": "editor",
+  "version": "1.0.0",
+  "description": "Website content editor for administrators.",
+  "main": "app.js",
+  "scripts": {
+    "test": ".\\node_modules\\.bin\\electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UniversityHigh/editor.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/UniversityHigh/editor/issues"
+  },
+  "homepage": "https://github.com/UniversityHigh/editor#readme",
+  "dependencies": {
+    "electron": "^1.6.2"
+  }
+}
