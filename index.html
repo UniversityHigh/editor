@@ -1,29 +1,43 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>UHSSE.edu Editor</title>
+<head>
+	<meta charset="UTF-8">
+	<title>UHSSE.edu Editor</title>
 
-		<link rel="stylesheet" href="css/normalize.min.css">
-		<link rel="stylesheet" href="css/basscss.min.css">
-		<link rel="stylesheet" href="css/theme.css">
-		
-		<script src="js/jquery.min.js" defer></script>
-		<script src="js/vue.min.js" defer></script>
-		<script src="js/index.js" defer></script>
-	</head>
+	<link rel="stylesheet" href="css/normalize.min.css">
+	<link rel="stylesheet" href="css/basscss.min.css">
+	<link rel="stylesheet" href="css/theme.css">
+	
+	<script src="js/jquery.min.js" defer></script>
+	<script src="js/vue.min.js" defer></script>
+	<script src="js/index.js" defer></script>
+</head>
 
-	<body>
-		<main id="app" class="flex flex-column">
-			<header class="flex flex-column items-center justify-center navbar">
-				<h2 :class="['ml3', { 'mb0': authenticated }]">UHSSE.edu Editor</h2>
+<body>
+	<main id="app" class="flex flex-column">
+		<header class="flex flex-column items-center justify-center navbar">
+			<h2 :class="['ml3', { 'mb0': authenticated }]">UHSSE.edu Editor</h2>
+			<ul v-if="authenticated" class="flex-auto">
+				<li v-for="link in nav"><a href="javascript:void(0);">{{ link.name }}</a></li>
+			</ul>
+		</header>
+		<br>
+		<p class = "center">1 new commit(s) since last update</p>
+		<br>
+		<button class = "btn">Download Repo</button>
+		<button class = "btn">Choose Repo</button>
+		<p class = "center">Found Repo: /Users/Andi/Library/Application Support/editor/universityhigh.github.io</p>
+		<br>
+		<p class = "center">Found 0 change(s)</p>		
+		<button class = "btn">Check for Changes</button>
+		<button class = "btn">Compile Changes</button>
+		<br>
+		<input type = "text" placeholder = "Commit Message"></input>
+		<button class = "btn">Commit</button>
+		<!--v-for section for each page (similar to how nav is acquired) from GitHub data.-->
+		<br>
+		<textarea style = "margin: 10px !important;"></textarea>
 
-				<ul v-if="authenticated" class="flex-auto">
-					<li v-for="link in nav"><a href="javascript:void(0);">{{ link.name }}</a></li>
-				</ul>
-			</header>
-
-			<!--v-for section for each page (similar to how nav is acquired) from GitHub data.-->
-		</main>
-	</body>
+	</main>
+</body>
 </html>
