@@ -22,25 +22,26 @@
 			</ul>
 		</header>
 
-		<p class="center">1 new commit(s) since last update</p>
+		<p class="center">{{topLabel}}</p>
 
 		<section class="flex items-center justify-center">
-			<button class="button mr1">Download Repo</button>
-			<button class="button ml1">Choose Repo</button>
+			<button class="button mr1" v-on:click = "downloadRepo">Download Repo</button>
+			<button class="button ml1" :class = "{ 'disabled': !repoFound}">Delete Repo</button>
 		</section>
 
-		<p class="center">Repo found: /Users/Andi/Library/Application Support/editor/universityhigh.github.io</p>
+		<p class="center">{{bottomLabel}}</p>
 
 		<section class="flex items-end justify-center mb1">
-			<button class="button mr1">Check for Changes</button>
-			<button class="button ml1">Compile Changes</button>
-			<input class="input mr2 ml4" type="text" placeholder="Commit Message"></input>
-			<button class="button">Commit</button>
+			<button class="button mr1" :class = "{ 'disabled': !repoFound}">Check for Changes</button>
+			<button class="button ml1" :class = "{ 'disabled': !repoFound}">Compile Changes</button>
+			<input class="input mr2 ml4" :class = "{ 'disabled': !repoFound}" type="text" placeholder="Commit Message"></input>
+			<button class="button" :class = "{ 'disabled': !repoFound}">Commit</button>
 		</section>
 
 		<!--v-for section for each page (similar to how nav is acquired) from GitHub data.-->
 		<label for="log" class="bold mt3">Logs</label>
-		<textarea id="log" class="flex flex-auto"></textarea>
+		<textarea id="log" class="flex flex-auto">
+		</textarea>
 	</main>
 </body>
 </html>
