@@ -21,23 +21,26 @@
 				<li v-for="link in nav"><a href="javascript:void(0);">{{ link.name }}</a></li>
 			</ul>
 		</header>
-		<br>
-		<p class = "center">1 new commit(s) since last update</p>
-		<br>
-		<button class = "btn">Download Repo</button>
-		<button class = "btn">Choose Repo</button>
-		<p class = "center">Found Repo: /Users/Andi/Library/Application Support/editor/universityhigh.github.io</p>
-		<br>
-		<p class = "center">Found 0 change(s)</p>		
-		<button class = "btn">Check for Changes</button>
-		<button class = "btn">Compile Changes</button>
-		<br>
-		<input type = "text" placeholder = "Commit Message"></input>
-		<button class = "btn">Commit</button>
-		<!--v-for section for each page (similar to how nav is acquired) from GitHub data.-->
-		<br>
-		<textarea style = "margin: 10px !important;"></textarea>
 
+		<p class="center">1 new commit(s) since last update</p>
+
+		<section class="flex items-center justify-center">
+			<button class="button mr1">Download Repo</button>
+			<button class="button ml1">Choose Repo</button>
+		</section>
+
+		<p class="center">Repo found: /Users/Andi/Library/Application Support/editor/universityhigh.github.io</p>
+
+		<section class="flex items-end justify-center mb1">
+			<button class="button mr1">Check for Changes</button>
+			<button class="button ml1">Compile Changes</button>
+			<input class="input mr2 ml4" type="text" placeholder="Commit Message"></input>
+			<button class="button">Commit</button>
+		</section>
+
+		<!--v-for section for each page (similar to how nav is acquired) from GitHub data.-->
+		<label for="log" class="bold mt3">Logs</label>
+		<textarea id="log" class="flex flex-auto"></textarea>
 	</main>
 </body>
 </html>
