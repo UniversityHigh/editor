@@ -56,6 +56,11 @@ hr {
 	cursor: pointer;
 }
 
+.button .disabled {
+	transition: all .25s ease;
+	background-color: #ef7478;
+}
+
 .input {
 	border: 0;
 	border-bottom: 1px solid lightgray;
