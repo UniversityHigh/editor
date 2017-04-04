@@ -44,6 +44,7 @@ hr {
 .button {
 	transition: all .25s ease;
 	padding: .75rem 1rem;
+	outline: none;
 	background-color: #e51c23;
 	text-decoration: none;
 	color: white;
