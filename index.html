@@ -26,13 +26,13 @@
 
 		<section class="flex items-center justify-center">
 			<button class="button mr1" v-on:click = "downloadRepo">Download Repo</button>
-			<button class="button ml1" :class = "{ 'disabled': !repoFound}">Delete Repo</button>
+			<button class="button ml1" v-on:click = "deleteRepo" :class = "{ 'disabled': !repoFound}">Delete Repo</button>
 		</section>
 
 		<p class="center">{{bottomLabel}}</p>
 
 		<section class="flex items-end justify-center mb1">
-			<button class="button mr1" :class = "{ 'disabled': !repoFound}">Check for Changes</button>
+			<button class="button mr1" v-on:click = "startServer" :class = "{ 'disabled': !repoFound}">Enable Server</button>
 			<button class="button ml1" :class = "{ 'disabled': !repoFound}">Compile Changes</button>
 			<input class="input mr2 ml4" :class = "{ 'disabled': !repoFound}" type="text" placeholder="Commit Message"></input>
 			<button class="button" :class = "{ 'disabled': !repoFound}">Commit</button>
@@ -40,8 +40,7 @@
 
 		<!--v-for section for each page (similar to how nav is acquired) from GitHub data.-->
 		<label for="log" class="bold mt3">Logs</label>
-		<textarea id="log" class="flex flex-auto">
-		</textarea>
+		<textarea id="log" class="flex flex-auto">{{logText}}</textarea>
 	</main>
 </body>
 </html>

@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/UniversityHigh/editor#readme",
   "dependencies": {
-    "electron": "^1.6.2"
+    "adm-zip": "^0.4.7",
+    "electron": "^1.6.2",
+    "harp": "^0.23.0"
   }
 }
