@@ -20,6 +20,7 @@
     "adm-zip": "^0.4.7",
     "electron": "^1.6.2",
     "harponica": "UniversityHigh/harponica",
+    "opn": "^4.0.2",
     "rimraf": "2.6.1"
   }
 }

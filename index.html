@@ -22,20 +22,26 @@
 			</ul>
 		</header>
 
-		<p class="center">{{topLabel}}</p>
+		<p class="center">{{ backend.checkForRepo() ? `Found repo: ${backend.repoPath}` : "Couldn't find repo, need to download." }}</p>
 
 		<section class="flex items-center justify-center">
-			<button class="button mr1" v-on:click = "downloadRepo">Download Repo</button>
-			<button class="button ml1" v-on:click = "deleteRepo" :class = "{ 'disabled': !repoFound}">Delete Repo</button>
+			<button class="button mr1" v-on:click = "downloadRepo">Download Repo {{downloadProgress}}</button>
+			<button class="button ml1" v-on:click = "deleteRepo" :class = "{ 'disabled': !backend.checkForRepo()}">Delete Repo</button>
 		</section>
 
-		<p class="center">{{bottomLabel}}</p>
+		<p class="center">Server {{backend.serving ? "online" : "offline"}}. <a v-if = "backend.serving" href = "" v-on:click = "openPreview()">Open preview website.</a></p>
 
 		<section class="flex items-end justify-center mb1">
-			<button class="button mr1" v-on:click = "toggleServer" :class = "{ 'disabled': !repoFound}">{{serverControl}}</button>
-			<button class="button ml1" :class = "{ 'disabled': !repoFound}">Compile Changes</button>
-			<input class="input mr2 ml4" :class = "{ 'disabled': !repoFound}" type="text" placeholder="Commit Message"></input>
-			<button class="button" :class = "{ 'disabled': !repoFound}">Commit</button>
+			<button class="button mr1" v-on:click = "toggleServer" :class = "{ 'disabled': !backend.checkForRepo()}">{{ !backend.serving ? "Activate" : "Shutdown"}} Server</button>
+			<button class="button ml1" :class = "{ 'disabled': !backend.checkForRepo()}">Compile Changes</button>
+			<input class="input mr2 ml4" :class = "{ 'disabled': !backend.checkForRepo()}" type="text" placeholder="Commit Message"></input>
+			<button class="button" :class = "{ 'disabled': !backend.checkForRepo()}">Commit</button>
+		</section>
+
+		<br>
+
+		<section class="flex items-end justify-center">
+			<button class = "button" v-on:click = "logText = ''">Clear Log</button>
 		</section>
 
 		<!--v-for section for each page (similar to how nav is acquired) from GitHub data.-->
