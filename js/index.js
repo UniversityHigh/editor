@@ -3,11 +3,12 @@ const {net} = require("electron").remote;
 const path = require("path");
 const fs = require("fs");
 const Zip = require("adm-zip");
-//const harp = require("harp");
+const harponica = require("harponica");
 
 const repoURL = "https://github.com/UniversityHigh/universityhigh.github.io/archive/master.zip"; // Repo can be downloaded from here
 const appPath = application.getPath("userData"); // All app files go here
 const repoPath = path.join(appPath, "universityhigh.github.io-master"); // Repo should be here
+const harpPath = path.join(repoPath, "_harp");
 
 new Vue({
 	el: "#app",
@@ -16,7 +17,9 @@ new Vue({
 		topLabel: "Searching for repo...",
 		bottomLabel: "Server is offline.",
 		repoFound: false,
-		logText: ""
+		serverControl: "Enable Server",
+		logText: "",
+		server: undefined
 	},
 	mounted: function() {
 		this.checkForRepo();
@@ -81,11 +84,27 @@ new Vue({
 				this.checkForRepo();
 			});
 		},
-		startServer: function() {
-			this.log("Starting server...");
-			harp.server(repoPath, function() {
-				this.log("end");
-			});
+		toggleServer: function() {
+			if (this.server != undefined) {
+				this.log("Stopping server...");
+				this.serverControl = "Stopping...";
+				let self = this;
+				this.server.stop(() => {
+					self.log("Stopped");
+					self.serverControl = "Enable Server";
+					self.server = undefined;
+				});
+			}
+			else {
+				this.log("Starting server...");
+				this.serverControl = "Starting...";
+				this.server = new harponica.Server(this.harpPath);
+				let self = this;
+				this.server.start(8080, () => {
+					self.log("Started");
+					self.serverControl = "Disable Server";
+				});
+			}
 		},
 		log: function(msg) {
 			this.logText += msg + "\n";
