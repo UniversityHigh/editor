@@ -33,7 +33,7 @@
 
 		<section class="flex items-end justify-center mb1">
 			<button class="button mr1" v-on:click = "!backend.serving ? startServer() : stopServer()" :class = "{ 'disabled': !backend.checkForRepo()}">{{ !backend.serving ? "Activate" : "Shutdown"}} Server</button>
-			<button class="button ml1" :class = "{ 'disabled': !backend.checkForRepo()}">Compile Changes</button>
+			<button class="button ml1" v-on:click = "compile" :class = "{ 'disabled': !backend.checkForRepo()}">Compile Changes</button>
 			<input class="input mr2 ml4" :class = "{ 'disabled': !backend.checkForRepo()}" type="text" placeholder="Commit Message"></input>
 			<button class="button" :class = "{ 'disabled': !backend.checkForRepo()}">Commit</button>
 		</section>

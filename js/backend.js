@@ -72,7 +72,8 @@ class Backend {
 	}
 
 	compile(callback) {
-
+		if (!this.server) this.server = new harponica.Server(this.harponicaPath);
+		this.server.compile(this.repoPath, callback);
 	}
 
 
