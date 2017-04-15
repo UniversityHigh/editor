@@ -19,6 +19,7 @@
   "dependencies": {
     "adm-zip": "^0.4.7",
     "electron": "^1.6.2",
-    "harponica": "UniversityHigh/harponica"
+    "harponica": "UniversityHigh/harponica",
+    "rimraf": "2.6.1"
   }
 }

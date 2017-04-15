@@ -4,11 +4,12 @@ const path = require("path");
 const fs = require("fs");
 const Zip = require("adm-zip");
 const harponica = require("harponica");
+const rimraf = require("rimraf");
 
 const repoURL = "https://github.com/UniversityHigh/universityhigh.github.io/archive/master.zip"; // Repo can be downloaded from here
 const appPath = application.getPath("userData"); // All app files go here
 const repoPath = path.join(appPath, "universityhigh.github.io-master"); // Repo should be here
-const harpPath = path.join(repoPath, "_harp");
+const harpPath = path.join(repoPath, "_harponica");
 
 new Vue({
 	el: "#app",
@@ -74,7 +75,7 @@ new Vue({
 		},
 		deleteRepo: function() {
 			this.topLabel = "Deleting repo...";
-			fs.rmdir(repoPath, (err) => {
+			rimraf(repoPath, {disableGlob: true}, (err) => {
 				if (err) {
 					this.log(`Failed to delete: ${err}`);
 				}
@@ -98,7 +99,7 @@ new Vue({
 			else {
 				this.log("Starting server...");
 				this.serverControl = "Starting...";
-				this.server = new harponica.Server(this.harpPath);
+				this.server = new harponica.Server(harpPath);
 				let self = this;
 				this.server.start(8080, () => {
 					self.log("Started");
