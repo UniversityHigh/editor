@@ -30,7 +30,16 @@ new Vue({
 				this.log("Deleted repo");
 			});
 		},
-		toggleServer: () => {},
+		startServer: function() {
+			this.backend.startServer(8080, () => {
+				this.log("Started server");
+			});
+		},
+		stopServer: function() {
+			this.backend.stopServer(() => {
+				this.log("Stopped server");
+			})
+		},
 		openPreview: () => opn("http://localhost:8080"),
 		log: function(msg) {
 			this.logText += msg + "\n";
