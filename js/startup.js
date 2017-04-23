@@ -1,7 +1,7 @@
 const {ipcRenderer} = require("electron");
 
 const currentPage = "startup.html";
-const nextPage = "something.html";
+const nextPage = "home.html";
 
 let vm = new Vue({
 	el: "#main",
