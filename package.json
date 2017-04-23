@@ -2,9 +2,10 @@
   "name": "editor",
   "version": "1.0.0",
   "description": "Website content editor for administrators.",
-  "main": "app.js",
+  "main": "editor.js",
   "scripts": {
-    "test": ".\\node_modules\\.bin\\electron ."
+    "test": ".\\node_modules\\.bin\\electron .",
+    "start": ".\\node_modules\\.bin\\electron ."
   },
   "repository": {
     "type": "git",
@@ -17,10 +18,12 @@
   },
   "homepage": "https://github.com/UniversityHigh/editor#readme",
   "dependencies": {
+    "@uhsse/harponica": "^2.4.1",
     "adm-zip": "^0.4.7",
     "electron": "^1.6.2",
-    "harponica": "UniversityHigh/harponica",
+    "electron-json-storage": "^3.0.5",
     "opn": "^4.0.2",
+    "request": "^2.81.0",
     "rimraf": "2.6.1"
   }
 }

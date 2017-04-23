@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel = "stylesheet" href = "css/startup.css">
+	<script src = "https://code.jquery.com/jquery-3.2.1.slim.min.js" onload = "window.$ = window.jQuery = module.exports;"></script>
+	<script src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src = "https://unpkg.com/vue"></script>
+	<script src = "js/startup.js" defer></script>
+	<title>Editor</title>
+</head>
+<body>
+	<div id = "main">
+		<div class = "fa-container">
+			<i v-if = "!updateAvailable" class = "fa fa-spinner fa-5x fa-pulse"></i>
+			<i v-else class = "fa fa-question fa-5x"></i>
+		</div>
+		<p>{{status}}</p>
+		<div v-if = "updateAvailable" class = "container-fluid">
+			<p>An update is available. You can choose to update now or later. Note that updating now may result in you losing any local changes (i.e. anything that hasn't been made live yet). However, if you do not update now you may overwrite any changes someone else has made to the website. <b>It is recommended to update now.</b></p>
+			<a v-on:click = "prepareForNextPage" class = "btn btn-danger btn-large">Update Later</a>
+			<a v-on:click = "updateNow" class = "btn btn-success btn-large">Update Now</a>
+		</div>
+	</div>
+</body>
+</head>
