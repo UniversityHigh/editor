@@ -149,7 +149,7 @@ class Backend {
 	setJSONForPage(page, pageJSON, callback) {
 		let json = JSON.parse(fs.readFileSync(this.localsPath, "utf8")); 
 		json[page] = pageJSON;
-		fs.writeFile(this.localsPath, JSON.stringify(json), (err) => callback(err));
+		fs.writeFile(this.localsPath, JSON.stringify(json, null, 2), (err) => callback(err)); // beautify w/ 2 tabs
 	}
 
 	compile(callback) {
