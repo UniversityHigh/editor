@@ -123,6 +123,27 @@ Vue.component("json-string", {
 	}
 });
 
+Vue.component("json-table", {
+	props: ["name", "linked", "columns"],
+	template: `
+		<div class = "table-scroll">
+			<label :for = "linked + 'table'">{{name}}</label>
+			<table class = "table table-striped table-hover table-condensed table-responsive" :id = "linked + 'table'">
+				<thead>
+					<tr>
+						<th v-for = "column in columns">{{ column }}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for = "item in this.$parent.json[linked]">
+						<td v-for = "column in columns">{{ item[column] }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	`
+});
+
 Vue.component("json-debug", {
 	template: `
 		<p>{{this.$parent.json}}</p>

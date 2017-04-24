@@ -9,6 +9,12 @@
 	<script src = "assets/js/vue.js"></script>
 	<script src = "js/globals.js"></script>
 	<script src = "js/home.js" defer></script>
+	<style type = "text/css">
+		.table-scroll {
+			max-height: 50vh;
+			overflow: auto;
+		}
+	</style>
 	<title>Editor</title>
 </head>
 <body>
@@ -18,6 +24,7 @@
 			<json-form page = "index">
 					<json-string name = "Name" linked = "name"></json-string>
 					<json-string name = "Lead" linked = "lead" help = "The text under the name overlaying the banner."></json-string>
+					<json-table name = "Qualities" linked = "qualities" :columns = "['backgroundColor', 'description', 'glyph', 'name']"></json-table>
 					<json-debug></json-debug>
 			</json-form>
 	</div>
