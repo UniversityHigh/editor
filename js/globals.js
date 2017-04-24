@@ -1,4 +1,8 @@
 const opn = require("opn");
+const fs = require("fs");
+const {ipcRenderer} = require("electron");
+
+const bus = new Vue();
 
 Vue.component("li-nk", {
 	props: ["from", "to", "paths"],
@@ -8,6 +12,7 @@ Vue.component("li-nk", {
 });
 
 Vue.component("navbar", {
+	props: ["preview-page"],
 	template: `
 		<nav class="navbar navbar-default navbar-fixed-top">
 			<div class="container-fluid">
@@ -40,16 +45,26 @@ Vue.component("navbar", {
 	 					</li>
 	 				</ul>
 	 				<form class="navbar-form navbar-right">
-	 					<button v-on:click = "preview" type = "button" class = "btn btn-default">Preview</button>
+	 					<button v-on:click = "save" type = "button" class = "btn btn-success">Save</button>
+	 					<button v-on:click = "preview" type = "button" class = "btn btn-default">Save & Preview</button>
 	 					<button type = "button" class="btn btn-danger">Push Changes</button>
 	 				</form>
 				</div>
 			</div>
 		</nav>
 		`,
+		created: function() {
+			ipcRenderer.on("setJSONForPageFailed", (err) => {
+				alert(`Failed to save: ${err}`);
+			});
+		},
 		methods: {
+			save: function() {
+				bus.$emit("save");
+			},
 			preview: function()  {
-				opn("http://localhost:8080");
+				this.save();
+				opn(`http://localhost:8080/${this.previewPage}`);
 			}
 		},
 		data: () => {
@@ -63,52 +78,53 @@ Vue.component("navbar", {
 		}
 	});
 
-// <nav class="navbar navbar-default navbar-fixed-top">
-// 		<div class="container-fluid">
-// 			<!-- Brand and toggle get grouped for better mobile display -->
-// 			<div class="navbar-header">
-// 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-// 					<span class="sr-only">Toggle navigation</span>
-// 					<span class="icon-bar"></span>
-// 					<span class="icon-bar"></span>
-// 					<span class="icon-bar"></span>
-// 				</button>
-// 				<a class="navbar-brand" href="#">UHSSE Editor</a>
-// 			</div>
 
-// 			<!-- Collect the nav links, forms, and other content for toggling -->
-// 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-// 				<ul class="nav navbar-nav">
-// 					<li class="dropdown">
-// 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Home <span class="caret"></span></a>
-// 						<ul class="dropdown-menu">
-// 							<li class= "active"><a href="#">Home</a></li>
-// 							<li><a href="#">Banners</a></li>
-// 							<li><a href="#">Navigation Bar & Notifications</a></li>
-// 							<li class = "dropdown-header">Information</li>
-// 							<li><a href="#">Contacts</a></li>
-// 							<li><a href="#">Lunch Menu</a></li>
-// 							<li><a href="#">Parent Organizations</a></li>
-// 							<li><a href="#">Guidance</a></li>
-// 							<li class = "dropdown-header">Academics</li>
-// 							<li><a href="#">Departments</a></li>
-// 							<li><a href="#">Classes</a></li>
-// 							<li class = "dropdown-header">Extracurriculars</li>
-// 							<li><a href="#">Sports</a></li>
-// 							<li><a href="#">Clubs</a></li>
-// 							<li class = "dropdown-header">Prospective Students</li>
-// 							<li><a href="#">Application & Open Houses</a></li>
-// 							<li class = "dropdown-header">Editor</li>
-// 							<li><a href="#">Fix Preview</a></li>
-// 							<li><a href="#">Advanced Guide</a></li>
-// 							<li><a href="#">Contact Developers</a></li>
-// 						</ul>
-// 					</li>
-// 				</ul>
-// 				<form class="navbar-form navbar-right">
-// 					<button type = "button" class = "btn btn-default">Preview</button>
-// 					<button type="button" class="btn btn-danger">Push Changes</button>
-// 				</form>
-// 			</div><!-- /.navbar-collapse -->
-// 		</div><!-- /.container-fluid -->
-// 	</nav>
+Vue.component("json-form", {
+	props: ["page"],
+	template: `
+		<form>
+			<slot></slot>
+		</form>
+	`,
+	created: function() {
+		this.json = ipcRenderer.sendSync("getJSONForPage", this.page);
+		bus.$on("save", () => {
+			ipcRenderer.send("setJSONForPage", this.page, this.json);
+		});
+	},
+	data: () => {
+		return {
+			json: "",
+		}
+	}
+});
+
+Vue.component("json-string", {
+	props: ["name", "linked", "help"],
+	created: function() {
+		this.initialValue = this.$parent.json[this.linked];
+	},
+	methods: {
+		update: function() {
+			this.$parent.json[this.linked] = event.target.value;
+		}
+	},
+	template: `
+		<div class = "form-group">
+			<label :for = "linked + 'StringInput'">{{name}}</label>
+			<input type = "text" class = "form-control" :id = "linked + 'StringInput'" :value = "initialValue" v-on:input = "update">
+			<p v-if = "help" class = "help-block">{{help}}</p>
+		</div>
+	`,
+	data: () => {
+		return {
+			initialValue: ""
+		}
+	}
+});
+
+Vue.component("json-debug", {
+	template: `
+		<p>{{this.$parent.json}}</p>
+	`
+});

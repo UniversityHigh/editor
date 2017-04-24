@@ -13,10 +13,13 @@
 </head>
 <body>
 	<div id = "main">
-		<navbar></navbar>
+		<navbar preview-page = ""></navbar>
 		<div class = "container-fluid">
-		<p>home
-		</div>
+			<json-form page = "index">
+					<json-string name = "Name" linked = "name"></json-string>
+					<json-string name = "Lead" linked = "lead" help = "The text under the name overlaying the banner."></json-string>
+					<json-debug></json-debug>
+			</json-form>
 	</div>
 </body>
 </html>

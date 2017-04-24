@@ -15,6 +15,7 @@ class Backend {
 		this.baseCommitURL = "https://api.github.com/repos/UniversityHigh/universityhigh.github.io/git/commits";
 		this.repoPath = path.join(this.userDataPath, "universityhigh.github.io-master");
 		this.harponicaPath = path.join(this.repoPath, "_harponica");
+		this.localsPath = path.join(this.harponicaPath, "_locals.json");
 		this.server = undefined;
 		this.serving = false;
 	}
@@ -138,6 +139,17 @@ class Backend {
 			this.serving = false;
 			callback();
 		});
+	}
+
+	getJSONForPage(page) {
+		let json = JSON.parse(fs.readFileSync(this.localsPath, "utf8"));
+		return json[page];
+	}
+
+	setJSONForPage(page, pageJSON, callback) {
+		let json = JSON.parse(fs.readFileSync(this.localsPath, "utf8")); 
+		json[page] = pageJSON;
+		fs.writeFile(this.localsPath, JSON.stringify(json), (err) => callback(err));
 	}
 
 	compile(callback) {

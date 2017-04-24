@@ -28,6 +28,12 @@ ipcMain.on("startServer", (event) => {
 		win.webContents.send("serverStarted");
 	});
 });
+ipcMain.on("getJSONForPage", (event, page) => event.returnValue = backend.getJSONForPage(page));
+ipcMain.on("setJSONForPage", (event, page, json) => {
+	backend.setJSONForPage(page, json, (err) => {
+		if (err) win.webContents.send("setJSONForPageFailed", err);
+	});
+});
 
 function createWindow() {
 	win = new BrowserWindow({
