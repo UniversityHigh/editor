@@ -45,9 +45,9 @@ Vue.component("navbar", {
 	 					</li>
 	 				</ul>
 	 				<form class="navbar-form navbar-right">
-	 					<button v-on:click = "save" type = "button" class = "btn btn-success">Save</button>
+	 					<button v-on:click = "save" type = "button" class = "btn btn-warning">Save</button>
 	 					<button v-on:click = "preview" type = "button" class = "btn btn-default">Save & Preview</button>
-	 					<button type = "button" class="btn btn-danger">Push Changes</button>
+	 					<button type = "button" class="btn btn-success">Push Changes</button>
 	 				</form>
 				</div>
 			</div>
@@ -124,24 +124,39 @@ Vue.component("json-string", {
 });
 
 Vue.component("json-table", {
-	props: ["name", "linked", "columns"],
+	props: ["name", "linked", "columns", "help"],
 	template: `
 		<div class = "table-scroll">
 			<label :for = "linked + 'table'">{{name}}</label>
+			<p v-if = "help" class = "help-block" v-html = "help"></p>
 			<table class = "table table-striped table-hover table-condensed table-responsive" :id = "linked + 'table'">
 				<thead>
 					<tr>
 						<th v-for = "column in columns">{{ column }}</th>
+						<th>Actions</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr v-for = "item in this.$parent.json[linked]">
-						<td v-for = "column in columns">{{ item[column] }}</td>
+					<tr v-for = "item, index in this.$parent.json[linked]">
+						<td v-for = "column in columns"><input type = "text" class = "form-control" :value = "item[column]" v-on:input = "modifyColumnForIndex(column, index)"></td>
+						<td><button type = "button" v-on:click = "removeRow(index)" class = "btn btn-small btn-danger"><i class = "fa fa-minus-circle"></i></button></td>
 					</tr>
 				</tbody>
 			</table>
+			<button type = "button" v-on:click = "addRow" class = "btn btn-success pull-right"><i class = "fa fa-plus"></i> Add</button>
 		</div>
-	`
+	`,
+	methods: {
+		addRow: function() {
+			this.$parent.json[this.linked].push({});
+		},
+		removeRow: function(index) {
+			this.$parent.json[this.linked].splice(index, 1);
+		},
+		modifyColumnForIndex: function(column, index) {
+			this.$parent.json[this.linked][index][column] = event.target.value;
+		}
+	}
 });
 
 Vue.component("json-debug", {
