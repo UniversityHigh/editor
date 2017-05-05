@@ -93,6 +93,11 @@ Vue.component("json-form", {
 			ipcRenderer.send("setJSONForPage", this.page, this.json);
 		});
 	},
+	methods: {
+		interpret: function(str) {
+			return eval(str);
+		}
+	},
 	data: () => {
 		return {
 			json: "",
@@ -101,19 +106,19 @@ Vue.component("json-form", {
 });
 
 Vue.component("json-string", {
-	props: ["name", "linked", "help"],
+	props: ["name", "path", "id", "help"],
 	created: function() {
-		this.initialValue = this.$parent.json[this.linked];
+		this.initialValue = eval(`this.$parent.json${this.path}`); // hax but it works
 	},
 	methods: {
 		update: function() {
-			this.$parent.json[this.linked] = event.target.value;
+			eval(`this.$parent.json${this.path} = event.target.value`);
 		}
 	},
 	template: `
 		<div class = "form-group">
-			<label :for = "linked + 'StringInput'">{{name}}</label>
-			<input type = "text" class = "form-control" :id = "linked + 'StringInput'" :value = "initialValue" v-on:input = "update">
+			<label :for = "id">{{name}}</label>
+			<input type = "text" class = "form-control" :id = "id" :value = "initialValue" v-on:input = "update">
 			<p v-if = "help" class = "help-block">{{help}}</p>
 		</div>
 	`,
@@ -125,12 +130,12 @@ Vue.component("json-string", {
 });
 
 Vue.component("json-table", {
-	props: ["name", "linked", "columns", "help"],
+	props: ["name", "id", "path", "columns", "help"],
 	template: `
 		<div class = "table-scroll">
-			<label :for = "linked + 'table'">{{name}}</label>
+			<label :for = "id">{{name}}</label>
 			<p v-if = "help" class = "help-block" v-html = "help"></p>
-			<table class = "table table-striped table-hover table-condensed table-responsive" :id = "linked + 'table'">
+			<table class = "table table-striped table-hover table-condensed table-responsive" :id = "id">
 				<thead>
 					<tr>
 						<th v-for = "column in columns">{{ column }}</th>
@@ -138,7 +143,7 @@ Vue.component("json-table", {
 					</tr>
 				</thead>
 				<tbody>
-					<tr v-for = "item, index in this.$parent.json[linked]">
+					<tr v-for = "item, index in getTable()">
 						<td v-for = "column in columns"><input type = "text" class = "form-control" :value = "item[column]" v-on:input = "modifyColumnForIndex(column, index)"></td>
 						<td><button type = "button" v-on:click = "removeRow(index)" class = "btn btn-small btn-danger"><i class = "fa fa-minus-circle"></i></button></td>
 					</tr>
@@ -148,14 +153,17 @@ Vue.component("json-table", {
 		</div>
 	`,
 	methods: {
+		getTable: function() {
+			return eval(`this.$parent.json${this.path}`);
+		},
 		addRow: function() {
-			this.$parent.json[this.linked].push({});
+			eval(`this.$parent.json${this.path}.push({})`);
 		},
 		removeRow: function(index) {
-			this.$parent.json[this.linked].splice(index, 1);
+			eval(`this.$parent.json${this.path}.splice(index, 1)`);
 		},
 		modifyColumnForIndex: function(column, index) {
-			this.$parent.json[this.linked][index][column] = event.target.value;
+			eval(`this.$parent.json${this.path}[index][column] = event.target.value`);
 		}
 	}
 });

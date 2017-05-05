@@ -16,14 +16,21 @@
 		<navbar preview-page = ""></navbar>
 		<div class = "container-fluid">
 			<json-form page = "index">
-				<json-string name = "Name" linked = "name"></json-string>
-				<json-string name = "Lead" linked = "lead" help = "The text under the name overlaying the banner."></json-string>
+				<json-string name = "Name" id = "name" path = "['name']"></json-string>
+				<json-string name = "Lead" id = "lead" path = "['lead']" help = "The text under the name overlaying the banner."></json-string>
 				<json-table name = "Qualities" 
-				linked = "qualities" 
+				id = "qualities"
+				path = "['qualities']" 
 				:columns = "['name', 'description', 'backgroundColor', 'glyph']"
 				help = "The panel next to the gallery."
 				></json-table>
-				<json-table name = "Gallery" linked = "gallery" :columns = "['link', 'src', 'caption']"></json-table>
+				<json-table 
+				name = "Gallery" 
+				id = "gallery" 
+				path = "['gallery']" 
+				:columns = "['link', 'src', 'caption']">
+				</json-table>
+				<json-debug></json-debug>
 			</json-form>
 		</div>
 	</div>
