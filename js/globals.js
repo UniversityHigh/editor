@@ -132,24 +132,26 @@ Vue.component("json-string", {
 Vue.component("json-table", {
 	props: ["name", "id", "path", "columns", "help"],
 	template: `
-		<div class = "table-scroll">
+		<div class = "table-container">
 			<label :for = "id">{{name}}</label>
 			<p v-if = "help" class = "help-block" v-html = "help"></p>
-			<table class = "table table-striped table-hover table-condensed table-responsive" :id = "id">
-				<thead>
-					<tr>
-						<th v-for = "column in columns">{{ column }}</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr v-for = "item, index in getTable()">
-						<td v-for = "column in columns"><input type = "text" class = "form-control" :value = "item[column]" v-on:input = "modifyColumnForIndex(column, index)"></td>
-						<td><button type = "button" v-on:click = "removeRow(index)" class = "btn btn-small btn-danger"><i class = "fa fa-minus-circle"></i></button></td>
-					</tr>
-				</tbody>
-			</table>
-			<button type = "button" v-on:click = "addRow" class = "btn btn-success pull-right"><i class = "fa fa-plus"></i> Add</button>
+			<div class = "table-scroll">
+				<table class = "table table-striped table-hover table-condensed table-responsive" :id = "id">
+					<thead>
+						<tr>
+							<th v-for = "column in columns">{{ column }}</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for = "item, index in getTable()">
+							<td v-for = "column in columns"><input type = "text" class = "form-control" :value = "item[column]" v-on:input = "modifyColumnForIndex(column, index)"></td>
+							<td><button type = "button" v-on:click = "removeRow(index)" class = "btn btn-small btn-danger"><i class = "fa fa-minus-circle"></i></button></td>
+						</tr>
+					</tbody>
+				</table>
+				<button type = "button" v-on:click = "addRow" class = "btn btn-success btn-add-row pull-right"><i class = "fa fa-plus"></i> Add</button>
+			</div>
 		</div>
 	`,
 	methods: {
