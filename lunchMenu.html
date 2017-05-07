@@ -13,9 +13,13 @@
 </head>
 <body>
 	<div id = "main">
-		<navbar preview-page = ""></navbar>
+		<navbar preview-page = "information#lunchMenu"></navbar>
 		<div class = "container-fluid">
-			<p>This page is currently blank but will contain functionality to modify the lunch menu widget in the future.</p>
+			<json-form page = "information">
+				<json-string name = "Section Name" path = "['lunchMenu']['name']"></json-string>
+				<json-string name = "Section Lead" path = "['lunchMenu']['lead']"></json-string>
+				<p>This page is currently blank but will contain functionality to modify the lunch menu widget in the future.</p>
+			</json-form>
 		</div>
 	</div>
 </body>

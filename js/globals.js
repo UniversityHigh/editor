@@ -35,8 +35,8 @@ Vue.component("navbar", {
 	 							<li><a href="#">Departments</a></li>
 	 							<li><a href="#">Classes</a></li>
 	 							<li class = "dropdown-header">Extracurriculars</li>
-	 							<li><a href="#">Sports</a></li>
-	 							<li><a href="#">Clubs</a></li>
+	 							<li-nk :from = "path" to = "sports.html" :paths = "paths"></li-nk>
+	 							<li-nk :from = "path" to = "clubs.html" :paths = "paths"></li-nk>
 	 							<li class = "dropdown-header">Prospective Students</li>
 	 							<li><a href="#">Application & Open Houses</a></li>
 	 							<li class = "dropdown-header">Editor</li>
@@ -76,7 +76,9 @@ Vue.component("navbar", {
 					"contacts.html": "Contacts",
 					"lunchMenu.html": "Lunch Menu",
 					"parentOrganizations.html": "Parent Organizations",
-					"guidance.html": "Guidance"
+					"guidance.html": "Guidance",
+					"clubs.html": "Clubs",
+					"sports.html": "Sports"
 				}
 			}
 		}
@@ -109,7 +111,7 @@ Vue.component("json-form", {
 });
 
 Vue.component("json-string", {
-	props: ["name", "path", "id", "help"],
+	props: ["name", "path", "id", "big", "help"],
 	created: function() {
 		this.initialValue = eval(`this.$parent.json${this.path}`); // hax but it works
 	},
@@ -121,7 +123,8 @@ Vue.component("json-string", {
 	template: `
 		<div class = "form-group">
 			<label :for = "id">{{name}}</label>
-			<input type = "text" class = "form-control" :id = "id" :value = "initialValue" v-on:input = "update">
+			<textarea v-if = "big" class = "form-control" v-on:input = "update">{{ initialValue }}</textarea>
+			<input v-else type = "text" class = "form-control" :id = "id" :value = "initialValue" v-on:input = "update">
 			<p v-if = "help" class = "help-block">{{help}}</p>
 		</div>
 	`,

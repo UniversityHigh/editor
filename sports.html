@@ -13,16 +13,11 @@
 </head>
 <body>
 	<div id = "main">
-		<navbar preview-page = "information#guidance"></navbar>
+		<navbar preview-page = "extracurriculars#clubs"></navbar>
 		<div class = "container-fluid">
-			<json-form page = "information">
-				<json-string name = "Section Name" path = "['guidance']['name']"></json-string>
-				<json-string name = "Description" path = "['guidance']['description']" big = "true"></json-string>
-				<json-table
-					name = "Scholarships"
-					path = "['guidance']['scholarships']"
-					:columns = "['organization', 'link']">
-				</json-table>
+			<json-form page = "extracurriculars">
+				<json-string name = "Section Name" path = "['sports']['name']"></json-string>
+				<json-string name = "Section Lead" path = "['sports']['lead']"></json-string>
 			</json-form>
 		</div>
 	</div>
