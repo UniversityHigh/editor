@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href = "assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href = "assets/css/font-awesome.min.css">
+	<link rel = "stylesheet" href = "css/global.css"> 
+	<script src = "assets/js/jquery.js" onload = "window.$ = window.jQuery = module.exports;"></script>
+	<script src = "assets/js/bootstrap.js"></script>
+	<script src = "assets/js/vue.js"></script>
+	<script src = "js/globals.js"></script>
+	<script src = "js/jumpstart.js" defer></script>
+	<title>Editor</title>
+</head>
+<body>
+	<div id = "main">
+		<navbar preview-page = "information#parentOrganizations"></navbar>
+		<div class = "container-fluid">
+			<a href = "#agp" class = "pull-right">Go to Aftergrad Party</a>
+			<json-form page = "information">
+				<h3>PTO</h3>
+				<json-table
+					name = "Officers"
+					id = "pto-officers"
+					path = "['parentOrganizations']['pto']['officers']"
+					:columns = "['name', 'position', 'email']">
+				</json-table>
+				<br />
+				<json-string name = "Meeting Dates (Description)" id = "pto-meeting-dates-desc" path = "['parentOrganizations']['pto']['meetingDates']['description']"></json-string>
+				<json-simple-table
+					name = "Meeting Dates (Schedule)"
+					id = "pto-meeting-schedules"
+					path = "['parentOrganizations']['pto']['meetingDates']['dates']"
+					column = "dates">
+				</json-simple-table>
+				<br />
+				<json-table
+					name = "Meeting Minutes"
+					id = "pto-meeting-minutes"
+					path = "['parentOrganizations']['pto']['meetingMinutes']"
+					:columns = "['text', 'link']"
+				></json-table>
+				<br />
+				<json-table
+					name = "Fundraisers"
+					id = "pto-fundraisers"
+					path = "['parentOrganizations']['pto']['fundraisers']"
+					:columns = "['name', 'link']"
+				></json-table>
+				<h3 id = "agp">Aftergrad Party</h3>
+				<json-string name = "Meeting Dates (Description)" id = "agp-meeting-dates-desc" path = "['parentOrganizations']['afterGrad']['meetingDates']['description']"></json-string>
+				<json-simple-table
+					name = "Meeting Dates (Schedule)"
+					id = "agp-meeting-schedules"
+					path = "['parentOrganizations']['afterGrad']['meetingDates']['dates']"
+					column = "dates">
+				</json-simple-table>
+				<br />
+				<json-table
+					name = "Donation Forms"
+					id = "agp-donations"
+					path = "['parentOrganizations']['afterGrad']['donationForms']"
+					:columns = "['name', 'link']"
+				></json-table>
+				<br />
+				<json-table
+					name = "How Can You Help?"
+					id = "agp-help"
+					path = "['parentOrganizations']['afterGrad']['aids']"
+					:columns = "['name', 'description']"
+				></json-table>
+				<br />
+				<json-table
+					name = "Updates"
+					id = "agp-updates"
+					path = "['parentOrganizations']['afterGrad']['updates']"
+					:columns = "['name', 'description']"
+				></json-table>
+			</json-form>
+		</div>
+	</div>
+</body>
+</html>

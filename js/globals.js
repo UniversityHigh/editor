@@ -25,11 +25,11 @@ Vue.component("navbar", {
 	 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">{{ paths[path] }} <span class="caret"></span></a>
 	 						<ul class="dropdown-menu">
 	 							<li-nk :from = "path" to = "home.html" :paths = "paths"></li-nk>
-	 							<li><a href="#">Banners</a></li>
+	 							<li><a href="#">Notification Banner</a></li>
 	 							<li class = "dropdown-header">Information</li>
 	 							<li-nk :from = "path" to = "contacts.html" :paths = "paths"></li-nk>
-	 							<li><a href="#">Lunch Menu</a></li>
-	 							<li><a href="#">Parent Organizations</a></li>
+	 							<li-nk :from = "path" to = "lunchMenu.html" :paths = "paths"></li-nk>
+	 							<li-nk :from = "path" to = "parentOrganizations.html" :paths = "paths"></li-nk>
 	 							<li><a href="#">Guidance</a></li>
 	 							<li class = "dropdown-header">Academics</li>
 	 							<li><a href="#">Departments</a></li>
@@ -73,7 +73,9 @@ Vue.component("navbar", {
 				path: window.location.pathname.substring(window.location.pathname.lastIndexOf("/") + 1),
 				paths: {
 					"home.html": "Home",
-					"contacts.html": "Contacts"
+					"contacts.html": "Contacts",
+					"lunchMenu.html": "Lunch Menu",
+					"parentOrganizations.html": "Parent Organizations"
 				}
 			}
 		}
@@ -166,6 +168,47 @@ Vue.component("json-table", {
 		},
 		modifyColumnForIndex: function(column, index) {
 			eval(`this.$parent.json${this.path}[index][column] = event.target.value`);
+		}
+	}
+});
+
+Vue.component("json-simple-table", {
+	props: ["name", "id", "path", "column", "help"],
+	template: `
+		<div class = "table-container">
+			<label :for = "id">{{name}}</label>
+			<p v-if = "help" class = "help-block" v-html = "help"></p>
+			<div class = "table-scroll">
+				<table class = "table table-striped table-hover table-condensed table-responsive" :id = "id">
+					<thead>
+						<tr>
+							<th>{{ column }}</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for = "item, index in getTable()">
+							<td style = "width: 90vw"><input type = "text" class = "form-control" :value = "item" v-on:input = "modifyIndex(index)"></td>
+							<td><button type = "button" v-on:click = "removeRow(index)" class = "btn btn-small btn-danger"><i class = "fa fa-minus-circle"></i></button></td>
+						</tr>
+					</tbody>
+				</table>
+				<button type = "button" v-on:click = "addRow" class = "btn btn-success btn-add-row pull-right"><i class = "fa fa-plus"></i> Add</button>
+			</div>
+		</div>
+	`,
+	methods: {
+		getTable: function() {
+			return eval(`this.$parent.json${this.path}`);
+		},
+		addRow: function() {
+			eval(`this.$parent.json${this.path}.push("")`);
+		},
+		removeRow: function(index) {
+			eval(`this.$parent.json${this.path}.splice(index, 1)`);
+		},
+		modifyIndex: function(index) {
+			eval(`this.$parent.json${this.path}[index] = event.target.value`);
 		}
 	}
 });

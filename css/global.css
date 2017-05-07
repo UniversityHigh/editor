@@ -9,10 +9,6 @@ body {
 	overflow: auto;
 }
 
-.table-container {
-	padding: 10px;
-}
-
 .table-container label {
 	padding-bottom: 10px;
 }
