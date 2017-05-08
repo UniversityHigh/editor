@@ -18,10 +18,19 @@
 			<json-form page = "extracurriculars">
 				<json-string name = "Section Name" path = "['clubs']['name']"></json-string>
 				<json-string name = "Section Lead" path = "['clubs']['lead']"></json-string>
-				<json-table
-					path = "['clubs']['clubs']"
-					:columns = "['name', 'leader']">
-				</json-table>
+				<json-repeat name = "Clubs" path = "['clubs']['clubs']">
+					<template scope = "parent">
+						<json-string name = "Name" :path = "`['clubs']['clubs'][${parent.index}]['name']`"></json-string>
+						<json-string name = "Link" :path = "`['clubs']['clubs'][${parent.index}]['leader']['link']`"></json-string>
+						<label>Leader</label>
+						<hr style = "border-color: #a9a9a9;"></hr>
+						<json-string name = "Name" :path = "`['clubs']['clubs'][${parent.index}]['leader']['name']`"></json-string>
+						<json-string name = "Position" :path = "`['clubs']['clubs'][${parent.index}]['leader']['position']`"></json-string>
+						<json-string name = "Phone" :path = "`['clubs']['clubs'][${parent.index}]['leader']['phone']`"></json-string>
+						<json-string name = "Email" :path = "`['clubs']['clubs'][${parent.index}]['leader']['email']`"></json-string>
+						<json-string name = "Position" :path = "`['clubs']['clubs'][${parent.index}]['leader']['position']`"></json-string>
+					</template>
+				</json-repeat>
 			</json-form>
 		</div>
 	</div>

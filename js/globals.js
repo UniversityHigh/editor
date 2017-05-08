@@ -113,11 +113,22 @@ Vue.component("json-form", {
 Vue.component("json-string", {
 	props: ["name", "path", "id", "big", "help"],
 	created: function() {
-		this.initialValue = eval(`this.$parent.json${this.path}`); // hax but it works
+		parentFound = false;
+		parents = 1;
+		while (!parentFound) {
+			if (eval(this.absolutePath) !== undefined) {
+				parentFound = true;
+			} else {
+				parents += 1;
+				this.absolutePath = `this.${'$parent.'.repeat(parents)}json`;
+			}
+		}
+		this.absolutePath = `${this.absolutePath}${this.path}`;
+		this.initialValue = eval(this.absolutePath); // hax but it works
 	},
 	methods: {
 		update: function() {
-			eval(`this.$parent.json${this.path} = event.target.value`);
+			eval(`${this.absolutePath} = event.target.value`);
 		}
 	},
 	template: `
@@ -130,7 +141,8 @@ Vue.component("json-string", {
 	`,
 	data: () => {
 		return {
-			initialValue: ""
+			initialValue: "",
+			absolutePath: "this.$parent.json"
 		}
 	}
 });
@@ -213,6 +225,44 @@ Vue.component("json-simple-table", {
 		},
 		modifyIndex: function(index) {
 			eval(`this.$parent.json${this.path}[index] = event.target.value`);
+		}
+	}
+});
+
+
+Vue.component("json-repeat", {
+	props: ["name", "path", "id", "help"],
+	created: function() {
+		this.items = eval(`this.$parent.json${this.path}`);
+	},
+	template: `
+		<div :id = "id">
+			<label :for = "id">{{name}}</label>
+			<p v-if = "help" class = "help-block" v-html = "help"></p>
+			<div class = "well" v-for = "item, index in items">
+				<button type = "button" v-if = "items.length > 1" v-on:click = "removeRow(index)" class = "btn btn-small btn-danger pull-right">
+					<i class = "fa fa-minus-circle"></i>
+				</button>
+				<br />
+				<slot :item = "item" :index = "index"></slot>
+			</div>
+			<button type = "button" v-on:click = "addRow" class = "btn btn-success btn-add-row pull-right"><i class = "fa fa-plus"></i> Add</button>
+		</div>
+	`,
+	data: () => {
+		return {
+			initialValue: ""
+		}
+	},
+	methods: {
+		addRow: function() {
+			lastRow = eval(`this.$parent.json${this.path}[this.$parent.json${this.path}.length - 1]`);
+			eval(`this.$parent.json${this.path}.push(lastRow)`);
+			this.$forceUpdate();
+		},
+		removeRow: function(index) {
+			eval(`this.$parent.json${this.path}.splice(index, 1)`);
+			this.$forceUpdate();
 		}
 	}
 });
