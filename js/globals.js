@@ -149,6 +149,20 @@ Vue.component("json-string", {
 
 Vue.component("json-table", {
 	props: ["name", "id", "path", "columns", "help"],
+	created: function() {
+		this.absolutePath = "this.$parent.json";
+		parentFound = false;
+		parents = 1;
+		while (!parentFound) {
+			if (eval(this.absolutePath) !== undefined) {
+				parentFound = true;
+			} else {
+				parents += 1;
+				this.absolutePath = `this.${'$parent.'.repeat(parents)}json`;
+			}
+		}
+		this.absolutePath = `${this.absolutePath}${this.path}`;
+	},
 	template: `
 		<div class = "table-container">
 			<label :for = "id">{{name}}</label>
@@ -174,16 +188,16 @@ Vue.component("json-table", {
 	`,
 	methods: {
 		getTable: function() {
-			return eval(`this.$parent.json${this.path}`);
+			return eval(this.absolutePath);
 		},
 		addRow: function() {
-			eval(`this.$parent.json${this.path}.push({})`);
+			eval(`$(this.absolutePath}.push({})`);
 		},
 		removeRow: function(index) {
-			eval(`this.$parent.json${this.path}.splice(index, 1)`);
+			eval(`${this.absolutePath}.splice(index, 1)`);
 		},
 		modifyColumnForIndex: function(column, index) {
-			eval(`this.$parent.json${this.path}[index][column] = event.target.value`);
+			eval(`${this.absolutePath}[index][column] = event.target.value`);
 		}
 	}
 });

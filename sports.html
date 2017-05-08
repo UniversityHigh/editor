@@ -13,11 +13,50 @@
 </head>
 <body>
 	<div id = "main">
-		<navbar preview-page = "extracurriculars#clubs"></navbar>
+		<navbar preview-page = "extracurriculars#sports"></navbar>
 		<div class = "container-fluid">
 			<json-form page = "extracurriculars">
 				<json-string name = "Section Name" path = "['sports']['name']"></json-string>
 				<json-string name = "Section Lead" path = "['sports']['lead']"></json-string>
+				<h3>Spring</h3>
+				<json-repeat name = "Sports" path = "['sports']['seasons'][0]['sports']">
+					<template scope = "parent">
+						<json-string name = "Name" :path = "`['sports']['seasons'][0]['sports'][${parent.index}]['name']`"></json-string>
+						<div class = "well">
+							<json-table 
+								name = "Coaches" 
+								:path = "`['sports']['seasons'][0]['sports'][${parent.index}]['coaches']`"
+								:columns = "['name', 'league']">
+							</json-table>
+							<json-table 
+								name = "Schedules" 
+								:path = "`['sports']['seasons'][0]['sports'][${parent.index}]['schedules']`"
+								help = "Nav should be a URL."
+								:columns = "['name', 'nav']">
+							</json-table>
+						</div>
+					</template>
+				</json-repeat>
+				<br />
+				<h3>Summer</h3>
+				<json-repeat name = "Sports" path = "['sports']['seasons'][1]['sports']">
+					<template scope = "parent">
+						<json-string name = "Name" :path = "`['sports']['seasons'][1]['sports'][${parent.index}]['name']`"></json-string>
+						<div class = "well">
+							<json-table 
+								name = "Coaches" 
+								:path = "`['sports']['seasons'][1]['sports'][${parent.index}]['coaches']`"
+								:columns = "['name', 'league']">
+							</json-table>
+							<json-table 
+								name = "Schedules" 
+								:path = "`['sports']['seasons'][1]['sports'][${parent.index}]['schedules']`"
+								help = "Nav should be a URL."
+								:columns = "['name', 'nav']">
+							</json-table>
+						</div>
+					</template>
+				</json-repeat>
 			</json-form>
 		</div>
 	</div>
