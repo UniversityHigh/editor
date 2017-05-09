@@ -32,13 +32,13 @@ Vue.component("navbar", {
 	 							<li-nk :from = "path" to = "parentOrganizations.html" :paths = "paths"></li-nk>
 	 							<li-nk :from = "path" to = "guidance.html" :paths = "paths"></li-nk>
 	 							<li class = "dropdown-header">Academics</li>
-	 							<li><a href="#">Departments</a></li>
-	 							<li><a href="#">Classes</a></li>
+	 							<li-nk :from = "path" to = "departments.html" :paths = "paths"></li-nk>
+	 							<li-nk :from = "path" to = "classes.html" :paths = "paths"></li-nk>
 	 							<li class = "dropdown-header">Extracurriculars</li>
 	 							<li-nk :from = "path" to = "sports.html" :paths = "paths"></li-nk>
 	 							<li-nk :from = "path" to = "clubs.html" :paths = "paths"></li-nk>
 	 							<li class = "dropdown-header">Prospective Students</li>
-	 							<li><a href="#">Application & Open Houses</a></li>
+	 							<li-nk :from = "path" to = "prospective.html" :paths = "paths"></li-nk>
 	 							<li class = "dropdown-header">Editor</li>
 	 							<li><a href="#">Advanced Guide</a></li>
 	 							<li><a href="#">Contact Developers</a></li>
@@ -77,8 +77,11 @@ Vue.component("navbar", {
 					"lunchMenu.html": "Lunch Menu",
 					"parentOrganizations.html": "Parent Organizations",
 					"guidance.html": "Guidance",
+					"departments.html": "Departments",
+					"classes.html": "Classes",
 					"clubs.html": "Clubs",
-					"sports.html": "Sports"
+					"sports.html": "Sports",
+					"prospective.html": "Applications & Open Houses"
 				}
 			}
 		}
@@ -89,7 +92,7 @@ Vue.component("json-form", {
 	props: ["page"],
 	template: `
 		<form>
-			<slot></slot>
+			<slot :json = "json"></slot>
 		</form>
 	`,
 	created: function() {
@@ -136,6 +139,44 @@ Vue.component("json-string", {
 			<label :for = "id">{{name}}</label>
 			<textarea v-if = "big" class = "form-control" v-on:input = "update">{{ initialValue }}</textarea>
 			<input v-else type = "text" class = "form-control" :id = "id" :value = "initialValue" v-on:input = "update">
+			<p v-if = "help" class = "help-block">{{help}}</p>
+		</div>
+	`,
+	data: () => {
+		return {
+			initialValue: "",
+			absolutePath: "this.$parent.json"
+		}
+	}
+});
+
+
+Vue.component("json-checkbox", {
+	props: ["name", "path", "id", "help"],
+	created: function() {
+		parentFound = false;
+		parents = 1;
+		while (!parentFound) {
+			if (eval(this.absolutePath) !== undefined) {
+				parentFound = true;
+			} else {
+				parents += 1;
+				this.absolutePath = `this.${'$parent.'.repeat(parents)}json`;
+			}
+		}
+		this.absolutePath = `${this.absolutePath}${this.path}`;
+		this.initialValue = eval(this.absolutePath); // hax but it works
+	},
+	methods: {
+		update: function() {
+			eval(`${this.absolutePath} = event.target.checked`);
+		}
+	},
+	template: `
+		<div class = "checkbox">
+			<label :for = "id">
+				<input type = "checkbox" :id = "id" :checked = "initialValue" v-on:change = "update"> {{name}}
+			</label>
 			<p v-if = "help" class = "help-block">{{help}}</p>
 		</div>
 	`,

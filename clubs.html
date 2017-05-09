@@ -21,7 +21,7 @@
 				<json-repeat name = "Clubs" path = "['clubs']['clubs']">
 					<template scope = "parent">
 						<json-string name = "Name" :path = "`['clubs']['clubs'][${parent.index}]['name']`"></json-string>
-						<json-string name = "Link" :path = "`['clubs']['clubs'][${parent.index}]['leader']['link']`"></json-string>
+						<json-string name = "Link" :path = "`['clubs']['clubs'][${parent.index}]['link']`"></json-string>
 						<div class = "well">
 						<label>Leader</label>
 							<json-string name = "Name" :path = "`['clubs']['clubs'][${parent.index}]['leader']['name']`"></json-string>

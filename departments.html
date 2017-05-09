@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href = "assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href = "assets/css/font-awesome.min.css">
+	<link rel = "stylesheet" href = "css/global.css"> 
+	<script src = "assets/js/jquery.js" onload = "window.$ = window.jQuery = module.exports;"></script>
+	<script src = "assets/js/bootstrap.js"></script>
+	<script src = "assets/js/vue.js"></script>
+	<script src = "js/globals.js"></script>
+	<script src = "js/jumpstart.js" defer></script>
+	<style type = "text/css">
+		textarea {
+			height: 25vh !important;
+		}
+	</style>
+	<title>Editor</title>
+</head>
+<body>
+	<div id = "main">
+		<navbar preview-page = "academics"></navbar>
+		<div class = "container-fluid">
+			<json-form page = "academics">
+				<json-string name = "Section Name" path = "['departments']['name']"></json-string>
+				<json-string name = "Section Lead" path = "['departments']['lead']"></json-string>
+				<json-repeat name = "Departments" path = "['departments']['departments']">
+					<template scope = "parent">
+						<json-string name = "Name" :path = "`['departments']['departments'][${parent.index}]['name']`"></json-string>
+						<json-string name = "Lead" :path = "`['departments']['departments'][${parent.index}]['lead']`"></json-string>
+						<json-string name = "Description" :path = "`['departments']['departments'][${parent.index}]['description']`" big = true></json-string>
+						<b>{{ parent.item.courses.length }} Course(s)</b>
+					</template>
+				</json-repeat>
+			</json-form>
+		</div>
+	</div>
+</body>
+</html>

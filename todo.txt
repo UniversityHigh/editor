@@ -3,3 +3,5 @@
 * Push changes
 * Delete repo button
 * Image uploading / management
+* Disable delete button when last element on json-table or json-simple-table
+* CONFIRMATIONS FOR DELETES

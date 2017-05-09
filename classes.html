@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href = "assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href = "assets/css/font-awesome.min.css">
+	<link rel = "stylesheet" href = "css/global.css"> 
+	<script src = "assets/js/jquery.js" onload = "window.$ = window.jQuery = module.exports;"></script>
+	<script src = "assets/js/bootstrap.js"></script>
+	<script src = "assets/js/vue.js"></script>
+	<script src = "js/globals.js"></script>
+	<style type = "text/css">
+		textarea {
+			height: 25vh !important;
+		}
+	</style>
+	<title>Editor</title>
+</head>
+<body>
+	<div id = "main">
+		<navbar preview-page = "academics"></navbar>
+		<div class = "container-fluid">
+			<json-form page = "academics">
+				<template scope = "uberParent">
+					<h3>Select Department</h3>
+					<select v-on:change = "changeDepartment">
+				 		<option v-for = "department, index in uberParent.json.departments.departments" :value = "index" :selected = "index == selectedDepartment">{{department.name}}</option>
+					</select>
+					<br />
+					<br />
+					<json-repeat name = "Classes" :path = "`['departments']['departments'][${selectedDepartment}]['courses']`">
+						<template scope = "parent">
+							<json-string name = "Name" :path = "`['departments']['departments'][${selectedDepartment}]['courses'][${parent.index}]['name']`"></json-string>
+							<json-string name = "Teacher" :path = "`['departments']['departments'][${selectedDepartment}]['courses'][${parent.index}]['teacher']`"></json-string>
+							<json-string name = "Teacher Email" :path = "`['departments']['departments'][${selectedDepartment}]['courses'][${parent.index}]['teacherEmail']`"></json-string>
+							<json-string name = "Description" :path = "`['departments']['departments'][${selectedDepartment}]['courses'][${parent.index}]['description']`" big = true></json-string>
+							<json-string name = "Syllabus Link" :path = "`['departments']['departments'][${selectedDepartment}]['courses'][${parent.index}]['syllabusnav']`"></json-string>
+							<json-checkbox name = "AP" :path = "`['departments']['departments'][${selectedDepartment}]['courses'][${parent.index}]['isAP']`"></json-checkbox>
+							<json-checkbox name = "ECE" :path = "`['departments']['departments'][${selectedDepartment}]['courses'][${parent.index}]['isECE']`"></json-checkbox>
+						</template>
+					</json-repeat>
+				</template>
+			</json-form>
+		</div>
+	</div>
+	<script defer>
+		new Vue({
+			el: "#main",
+			data: {
+				"selectedDepartment": 0
+			},
+			created: function() {
+				if (window.location.search) {
+					this.selectedDepartment = window.location.search.substring(12);
+				}
+			},
+			methods: {
+				changeDepartment: function() {
+					window.location.href = `classes.html?department=${event.target.value}`;
+				}
+			}
+		});
+	</script>
+</body>
+</html>
