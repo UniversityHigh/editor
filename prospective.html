@@ -21,13 +21,29 @@
 		<navbar preview-page = "prospective"></navbar>
 		<div class = "container-fluid">
 			<json-form page = "prospective">
-				<!-- <json-string name = "Section Name" path = "['guidance']['name']"></json-string>
-				<json-string name = "Description" path = "['guidance']['description']" big = "true"></json-string>
+				<json-string name = "Section Name" path = "['name']"></json-string>
+				<json-string name = "Section Lead" path = "['lead']"></json-string>
+				<h3>Applications</h3>
+				<json-string name = "Name" path = "['applications']['name']"></json-string>
+				<json-string name = "Lead" path = "['applications']['lead']"></json-string>
+				<json-string name = "Button Text" path = "['applications']['application']['buttonText']"></json-string>
+				<json-string name = "Month" path = "['applications']['application']['month']"></json-string>
+				<json-string name = "Day" path = "['applications']['application']['day']"></json-string>
+				<json-string name = "Link" path = "['applications']['application']['link']"></json-string>
 				<json-table
-					name = "Scholarships"
-					path = "['guidance']['scholarships']"
-					:columns = "['organization', 'link']">
-				</json-table> -->
+					name = "Timeline"
+					path = "['applications']['timeline']"
+					:columns = "['title', 'subtitle', 'backgroundColor']">
+				</json-table>
+				<h3>Open House</h3>
+				<json-string name = "Name" path = "['openHouse']['name']"></json-string>
+				<json-string name = "Lead" path = "['openHouse']['lead']"></json-string>
+				<json-string name = "Description" path = "['openHouse']['text']" big = true></json-string>
+				<json-table
+					name = "Dates"
+					path = "['openHouse']['dates']"
+					:columns = "['name', 'date', 'time', 'link']">
+				</json-table>
 			</json-form>
 		</div>
 	</div>
