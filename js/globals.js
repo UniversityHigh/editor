@@ -25,7 +25,7 @@ Vue.component("navbar", {
 	 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">{{ paths[path] }} <span class="caret"></span></a>
 	 						<ul class="dropdown-menu">
 	 							<li-nk :from = "path" to = "home.html" :paths = "paths"></li-nk>
-	 							<li><a href="#">Notification Banner</a></li>
+	 							<li-nk :from = "path" to = "annoucements.html" :paths = "paths"></li-nk>
 	 							<li class = "dropdown-header">Information</li>
 	 							<li-nk :from = "path" to = "contacts.html" :paths = "paths"></li-nk>
 	 							<li-nk :from = "path" to = "lunchMenu.html" :paths = "paths"></li-nk>
@@ -73,6 +73,7 @@ Vue.component("navbar", {
 				path: window.location.pathname.substring(window.location.pathname.lastIndexOf("/") + 1),
 				paths: {
 					"home.html": "Home",
+					"annoucements.html": "Annoucements",
 					"contacts.html": "Contacts",
 					"lunchMenu.html": "Lunch Menu",
 					"parentOrganizations.html": "Parent Organizations",

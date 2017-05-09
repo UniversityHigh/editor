@@ -9,6 +9,11 @@
 	<script src = "assets/js/vue.js"></script>
 	<script src = "js/globals.js"></script>
 	<script src = "js/jumpstart.js" defer></script>
+	<style>
+		.table-scroll {
+			max-height: 100vh !important;
+		}
+	</style>
 	<title>Editor</title>
 </head>
 <body>
@@ -16,19 +21,11 @@
 		<navbar preview-page = ""></navbar>
 		<div class = "container-fluid">
 			<json-form page = "index">
-				<json-string name = "Name" id = "name" path = "['name']"></json-string>
-				<json-table name = "Qualities" 
-				id = "qualities"
-				path = "['qualities']" 
-				:columns = "['name', 'description', 'backgroundColor', 'glyph']"
-				help = "The panel next to the gallery."
-				></json-table>
-				<json-table 
-				name = "Gallery" 
-				id = "gallery" 
-				path = "['gallery']" 
-				:columns = "['link', 'src', 'caption']">
-				</json-table>
+				<json-simple-table
+					name = "Annoucements"
+					path = "['announcements']"
+					:column = "announcements">
+				</json-simple-table>
 			</json-form>
 		</div>
 	</div>
