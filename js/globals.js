@@ -40,8 +40,8 @@ Vue.component("navbar", {
 	 							<li class = "dropdown-header">Prospective Students</li>
 	 							<li-nk :from = "path" to = "prospective.html" :paths = "paths"></li-nk>
 	 							<li class = "dropdown-header">Editor</li>
-	 							<li><a href="#">Advanced Guide</a></li>
-	 							<li><a href="#">Contact Developers</a></li>
+	 							<li-nk :from = "path" to = "guide.html" :paths = "paths"></li-nk>
+	 							<li-nk :from = "path" to = "fixit.html" :paths = "paths"></li-nk>
 	 						</ul>
 	 					</li>
 	 				</ul>
@@ -82,7 +82,9 @@ Vue.component("navbar", {
 					"classes.html": "Classes",
 					"clubs.html": "Clubs",
 					"sports.html": "Sports",
-					"prospective.html": "Applications & Open Houses"
+					"prospective.html": "Applications & Open Houses",
+					"guide.html": "Advanced Guide",
+					"fixit.html": "Fix Broken Repo"
 				}
 			}
 		}
