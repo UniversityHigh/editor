@@ -8,15 +8,39 @@
 	<script src = "assets/js/bootstrap.js"></script>
 	<script src = "assets/js/vue.js"></script>
 	<script src = "js/globals.js"></script>
-	<script src = "js/jumpstart.js" defer></script>
 	<title>Editor</title>
 </head>
 <body>
 	<div id = "main">
 		<navbar preview-page = ""></navbar>
 		<div class = "container-fluid">
-			<p>win
+			<p>Click the big red button in order to delete the repository on disk and start over anew.
+			<h5>WARNING: ALL UNSAVED LOCAL CHANGES WILL BE LOST.</h5>
+			<button type = "button" v-on:click = "deletThis" class = "btn btn-danger btn-lg">DELETE</button>
+			<p class = "help-block">{{status}}
 		</div>
 	</div>
+	<script defer>
+		new Vue({
+			el: "#main",
+			data: {
+				"status": "Operation not yet started."
+			},
+			methods: {
+				deletThis: function() {
+					ipcRenderer.send("deleteRepo");
+					ipcRenderer.on("deletedRepo", (event, err) => {
+						if (err) {
+							this.status = "Failed to delete repo on disk. Try restarting the application.";
+						}
+						else {
+							this.status = "Repo deleted.";
+							window.location.href = "startup.html";
+						}
+					});
+				}
+			}
+		});
+	</script>
 </body>
 </html>
