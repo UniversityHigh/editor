@@ -219,7 +219,7 @@ Vue.component("json-table", {
 					<tbody>
 						<tr v-for = "item, index in getTable()">
 							<td v-for = "column in columns"><input type = "text" class = "form-control" :value = "item[column]" v-on:input = "modifyColumnForIndex(column, index)"></td>
-							<td><button type = "button" v-on:click = "removeRow(index)" class = "btn btn-small btn-danger"><i class = "fa fa-minus-circle"></i></button></td>
+							<td><button type = "button" v-if = "getTable().length > 1" v-on:click = "removeRow(index)" class = "btn btn-small btn-danger"><i class = "fa fa-minus-circle"></i></button></td>
 						</tr>
 					</tbody>
 				</table>
@@ -232,7 +232,7 @@ Vue.component("json-table", {
 			return eval(this.absolutePath);
 		},
 		addRow: function() {
-			eval(`$(this.absolutePath}.push({})`);
+			eval(`${this.absolutePath}.push({})`);
 		},
 		removeRow: function(index) {
 			eval(`${this.absolutePath}.splice(index, 1)`);
@@ -260,7 +260,7 @@ Vue.component("json-simple-table", {
 					<tbody>
 						<tr v-for = "item, index in getTable()">
 							<td style = "width: 90vw"><input type = "text" class = "form-control" :value = "item" v-on:input = "modifyIndex(index)"></td>
-							<td><button type = "button" v-on:click = "removeRow(index)" class = "btn btn-small btn-danger"><i class = "fa fa-minus-circle"></i></button></td>
+							<td><button v-if = "getTable().length > 1" type = "button" v-on:click = "removeRow(index)" class = "btn btn-small btn-danger"><i class = "fa fa-minus-circle"></i></button></td>
 						</tr>
 					</tbody>
 				</table>
