@@ -2,6 +2,4 @@
 * Expando for json-string and json-table
 * Color picker
 * Push changes
-* Delete repo button
-* Image uploading / management
 * CONFIRMATIONS FOR DELETES

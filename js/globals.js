@@ -41,7 +41,7 @@ Vue.component("navbar", {
 	 							<li-nk :from = "path" to = "prospective.html" :paths = "paths"></li-nk>
 	 							<li class = "dropdown-header">Editor</li>
 	 							<li-nk :from = "path" to = "guide.html" :paths = "paths"></li-nk>
-	 							<li-nk :from = "path" to = "fixit.html" :paths = "paths"></li-nk>
+	 							<li-nk :from = "path" to = "fixIt.html" :paths = "paths"></li-nk>
 	 						</ul>
 	 					</li>
 	 				</ul>
@@ -84,7 +84,7 @@ Vue.component("navbar", {
 					"sports.html": "Sports",
 					"prospective.html": "Applications & Open Houses",
 					"guide.html": "Advanced Guide",
-					"fixit.html": "Fix Broken Repo"
+					"fixIt.html": "Fix Broken Repo"
 				}
 			}
 		}
@@ -192,7 +192,7 @@ Vue.component("json-checkbox", {
 });
 
 Vue.component("json-table", {
-	props: ["name", "id", "path", "columns", "help"],
+	props: ["name", "id", "path", "columns", "color", "help"],
 	created: function() {
 		this.absolutePath = "this.$parent.json";
 		parentFound = false;
@@ -221,8 +221,13 @@ Vue.component("json-table", {
 					</thead>
 					<tbody>
 						<tr v-for = "item, index in getTable()">
-							<td v-for = "column in columns"><input type = "text" class = "form-control" :value = "item[column]" v-on:input = "modifyColumnForIndex(column, index)"></td>
-							<td><button type = "button" v-if = "getTable().length > 1" v-on:click = "removeRow(index)" class = "btn btn-small btn-danger"><i class = "fa fa-minus-circle"></i></button></td>
+							<td v-for = "column in columns">
+								<input v-if = "column == color" type = "color" :value = "item[column]" v-on:input = "modifyColumnForIndex(column, index)">
+								<input v-else type = "text" class = "form-control" :value = "item[column]" v-on:input = "modifyColumnForIndex(column, index)">
+							</td>
+							<td>
+								<button type = "button" v-if = "getTable().length > 1" v-on:click = "removeRow(index)" class = "btn btn-small btn-danger"><i class = "fa fa-minus-circle"></i></button>
+							</td>
 						</tr>
 					</tbody>
 				</table>
