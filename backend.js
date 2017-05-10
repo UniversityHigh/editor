@@ -143,7 +143,7 @@ class Backend {
 
 	getJSONForPage(page) {
 		let json = JSON.parse(fs.readFileSync(this.localsPath, "utf8"));
-		return json[page];
+		return page ? json[page] : json;
 	}
 
 	setJSONForPage(page, pageJSON, callback) {

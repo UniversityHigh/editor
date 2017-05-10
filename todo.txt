@@ -2,7 +2,5 @@
 * Expando for json-string and json-table
 * Push changes
 * CONFIRMATIONS FOR DELETES
-* Max length for announcements
 * Fall and Winter sections
-* Enable changing banner pics
 * Implement GitHub npm

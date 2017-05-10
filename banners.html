@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href = "assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href = "assets/css/font-awesome.min.css">
+	<link rel = "stylesheet" href = "css/global.css"> 
+	<script src = "assets/js/jquery.js" onload = "window.$ = window.jQuery = module.exports;"></script>
+	<script src = "assets/js/bootstrap.js"></script>
+	<script src = "assets/js/vue.js"></script>
+	<script src = "js/globals.js"></script>
+	<script src = "js/jumpstart.js" defer></script>
+	<title>Editor</title>
+</head>
+<body>
+	<div id = "main">
+		<navbar preview-page = ""></navbar>
+		<div class = "container-fluid">
+			<json-form>
+				<h3>Home</h3>
+				<json-string name = "Banner" path = "['index']['banners']"></json-string>
+				<json-string name = "Title" path = "['index']['name']"></json-string>
+				<json-string name = "Lead" path = "['index']['lead']"></json-string>
+				<h3>Information</h3>
+				<json-string name = "Banner" path = "['information']['banner']"></json-string>
+				<json-string name = "Title" path = "['information']['name']"></json-string>
+				<json-string name = "Lead" path = "['information']['lead']"></json-string>
+				<h3>Academics</h3>
+				<json-string name = "Banner" path = "['academics']['banner']"></json-string>
+				<json-string name = "Title" path = "['academics']['name']"></json-string>
+				<json-string name = "Lead" path = "['academics']['lead']"></json-string>
+				<h3>Extracurriculars</h3>
+				<json-string name = "Banner" path = "['extracurriculars']['banner']"></json-string>
+				<json-string name = "Title" path = "['extracurriculars']['name']"></json-string>
+				<json-string name = "Lead" path = "['extracurriculars']['lead']"></json-string>
+				<h3>Prospective</h3>
+				<json-string name = "Banner" path = "['prospective']['banner']"></json-string>
+				<json-string name = "Title" path = "['prospective']['name']"></json-string>
+				<json-string name = "Lead" path = "['prospective']['lead']"></json-string>
+			</json-form>
+		</div>
+	</div>
+</body>
+</html>
