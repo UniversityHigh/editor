@@ -252,7 +252,7 @@ Vue.component("json-table", {
 });
 
 Vue.component("json-simple-table", {
-	props: ["name", "id", "path", "column", "help"],
+	props: ["name", "id", "path", "column", "maxlength", "help"],
 	template: `
 		<div class = "table-container">
 			<label :for = "id">{{name}}</label>
@@ -267,7 +267,7 @@ Vue.component("json-simple-table", {
 					</thead>
 					<tbody>
 						<tr v-for = "item, index in getTable()">
-							<td style = "width: 90vw"><input type = "text" class = "form-control" :value = "item" v-on:input = "modifyIndex(index)"></td>
+							<td style = "width: 90vw"><input type = "text" class = "form-control" :value = "item" :maxlength = "maxlength" v-on:input = "modifyIndex(index)"></td>
 							<td><button v-if = "getTable().length > 1" type = "button" v-on:click = "removeRow(index)" class = "btn btn-small btn-danger"><i class = "fa fa-minus-circle"></i></button></td>
 						</tr>
 					</tbody>
