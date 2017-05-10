@@ -31,9 +31,13 @@
 						<template scope = "parent">
 							<json-string name = "Name" :path = "`['departments']['departments'][${selectedDepartment}]['courses'][${parent.index}]['name']`"></json-string>
 							<json-string name = "Teacher" :path = "`['departments']['departments'][${selectedDepartment}]['courses'][${parent.index}]['teacher']`"></json-string>
-							<json-string name = "Teacher Email" :path = "`['departments']['departments'][${selectedDepartment}]['courses'][${parent.index}]['teacherEmail']`"></json-string>
+							<json-string name = "Teacher Email" :path = "`['departments']['departments'][${selectedDepartment}]['courses'][${parent.index}]['email']`"></json-string>
 							<json-string name = "Description" :path = "`['departments']['departments'][${selectedDepartment}]['courses'][${parent.index}]['description']`" big = true></json-string>
-							<json-string name = "Syllabus Link" :path = "`['departments']['departments'][${selectedDepartment}]['courses'][${parent.index}]['syllabusnav']`"></json-string>
+							<json-string name = "Syllabus Link" :path = "`['departments']['departments'][${selectedDepartment}]['courses'][${parent.index}]['syllabus']`"></json-string>
+							<json-string name = "Assignments Link" :path = "`['departments']['departments'][${selectedDepartment}]['courses'][${parent.index}]['assignments']`"></json-string>
+							<json-string name = "Teacher Website Link" :path = "`['departments']['departments'][${selectedDepartment}]['courses'][${parent.index}]['teacherWebsite']`"></json-string>
+							<json-string name = "Assignments Link" :path = "`['departments']['departments'][${selectedDepartment}]['courses'][${parent.index}]['assignments']`"></json-string>
+							<json-string name = "More Information Link" :path = "`['departments']['departments'][${selectedDepartment}]['courses'][${parent.index}]['moreInformation']`"></json-string>
 							<json-checkbox name = "AP" :path = "`['departments']['departments'][${selectedDepartment}]['courses'][${parent.index}]['isAP']`"></json-checkbox>
 							<json-checkbox name = "ECE" :path = "`['departments']['departments'][${selectedDepartment}]['courses'][${parent.index}]['isECE']`"></json-checkbox>
 						</template>

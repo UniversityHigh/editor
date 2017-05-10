@@ -2,3 +2,5 @@
 * Expando for json-string and json-table
 * Push changes
 * CONFIRMATIONS FOR DELETES
+* Min length for announcements
+* Fall and Winter sections
