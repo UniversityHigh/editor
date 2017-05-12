@@ -24,6 +24,7 @@ Vue.component("navbar", {
 	 					<li class="dropdown">
 	 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">{{ paths[path] }} <span class="caret"></span></a>
 	 						<ul class="dropdown-menu">
+	 							<li-nk :from = "path" to = "login.html" :paths = "paths"></li-nk>
 	 							<li-nk :from = "path" to = "home.html" :paths = "paths"></li-nk>
 	 							<li-nk :from = "path" to = "banners.html" :paths = "paths"></li-nk>
 	 							<li-nk :from = "path" to = "annoucements.html" :paths = "paths"></li-nk>
@@ -73,6 +74,7 @@ Vue.component("navbar", {
 			return {
 				path: window.location.pathname.substring(window.location.pathname.lastIndexOf("/") + 1),
 				paths: {
+					"login.html": "Login",
 					"home.html": "Home",
 					"banners.html": "Banners",
 					"annoucements.html": "Annoucements",
@@ -94,9 +96,9 @@ Vue.component("navbar", {
 
 
 Vue.component("json-form", {
-	props: ["page"],
+	props: ["page", "id"],
 	template: `
-		<form>
+		<form :id = "id">
 			<slot :json = "json"></slot>
 		</form>
 	`,

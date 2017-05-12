@@ -4,3 +4,4 @@
 * CONFIRMATIONS FOR DELETES
 * Fall and Winter sections
 * Implement GitHub npm
+* Departments wtf?

@@ -9,6 +9,22 @@
 	<script src = "assets/js/vue.js"></script>
 	<script src = "js/globals.js"></script>
 	<script src = "js/jumpstart.js" defer></script>
+	<script>
+		bus.$on("save", () => {
+			let departmentsJSON = vm.$children[1].json.departments.departments;
+			let names = departmentsJSON.map((department) => department.name);
+			console.log(names);
+			let newAcademicsJSON = {};
+			for (i in names) {
+				let name = names[i];
+				newAcademicsJSON[name] = name.toLowerCase().trim().replace(/\s/g, "");
+			}
+			console.log(newAcademicsJSON);
+			let globalsJSON = ipcRenderer.sendSync("getJSONForPage", "globals");
+			globalsJSON["navbar"]["links"]["Academics"][1] = newAcademicsJSON;
+			ipcRenderer.send("setJSONForPage", "globals", globalsJSON);
+		});
+	</script>
 	<style type = "text/css">
 		textarea {
 			height: 25vh !important;
@@ -20,7 +36,7 @@
 	<div id = "main">
 		<navbar preview-page = "academics"></navbar>
 		<div class = "container-fluid">
-			<json-form page = "academics">
+			<json-form page = "academics" id = "garb">
 				<json-string name = "Section Name" path = "['departments']['name']"></json-string>
 				<json-string name = "Section Lead" path = "['departments']['lead']"></json-string>
 				<json-repeat name = "Departments" path = "['departments']['departments']">

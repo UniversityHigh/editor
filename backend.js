@@ -16,6 +16,7 @@ class Backend {
 		this.repoPath = path.join(this.userDataPath, "universityhigh.github.io-master");
 		this.harponicaPath = path.join(this.repoPath, "_harponica");
 		this.localsPath = path.join(this.harponicaPath, "_locals.json");
+		this.globalsPath = path.join(this.harponicaPath, "_globals.json");
 		this.server = undefined;
 		this.serving = false;
 	}
@@ -142,11 +143,18 @@ class Backend {
 	}
 
 	getJSONForPage(page) {
+		if (page == "globals") {
+			return JSON.parse(fs.readFileSync(this.globalsPath, "utf8"));
+		}
 		let json = JSON.parse(fs.readFileSync(this.localsPath, "utf8"));
 		return page ? json[page] : json;
 	}
 
 	setJSONForPage(page, pageJSON, callback) {
+		if (page == "globals") {
+			fs.writeFile(this.globalsPath, JSON.stringify(pageJSON, null, 2), (err) => callback(err));
+			return;
+		}
 		let json = JSON.parse(fs.readFileSync(this.localsPath, "utf8")); 
 		json[page] = pageJSON;
 		fs.writeFile(this.localsPath, JSON.stringify(json, null, 2), (err) => callback(err)); // beautify w/ 2 tabs
