@@ -48,6 +48,8 @@ Vue.component("navbar", {
 	 					</li>
 	 				</ul>
 	 				<form class="navbar-form navbar-right">
+	 					<button v-on:click = "undo" type = "button" class = "btn btn-default"><i class = "fa fa-undo"></i></button>
+	 					<button v-on:click = "redo" type = "button" class = "btn btn-default"><i class = "fa fa-repeat"></i></button>
 	 					<button v-on:click = "save" type = "button" class = "btn btn-warning">Save</button>
 	 					<button v-on:click = "preview" type = "button" class = "btn btn-default">Save & Preview</button>
 	 					<button type = "button" class="btn btn-success">Push Changes</button>
@@ -62,6 +64,12 @@ Vue.component("navbar", {
 			});
 		},
 		methods: {
+			undo: function() {
+				this.webContents.undo();
+			},
+			redo: function() {
+				this.webContents.redo();
+			},
 			save: function() {
 				bus.$emit("save");
 			},
@@ -72,6 +80,7 @@ Vue.component("navbar", {
 		},
 		data: () => {
 			return {
+				webContents: require("electron").remote.getCurrentWebContents(),
 				path: window.location.pathname.substring(window.location.pathname.lastIndexOf("/") + 1),
 				paths: {
 					"login.html": "Login",
@@ -211,6 +220,19 @@ Vue.component("json-table", {
 		}
 		this.absolutePath = `${this.absolutePath}${this.path}`;
 	},
+	mounted: function() {
+		// Go through each input color and set its starting value to its defaultValue
+		if (this.color) {
+			if (!this.id) {
+				console.log("FAIL: ID required for tables with color inputs");
+				return;
+			}
+			let colorInputs = document.getElementsByClassName(`${this.id}-input-color`);
+			Array.prototype.forEach.call(colorInputs, (input) => {
+ 				input.setAttribute("defaultValue", input.value);
+			});
+		}
+	},
 	template: `
 		<div class = "table-container">
 			<label :for = "id">{{name}}</label>
@@ -225,8 +247,13 @@ Vue.component("json-table", {
 					</thead>
 					<tbody>
 						<tr v-for = "item, index in getTable()">
-							<td v-for = "column in columns">
-								<input v-if = "column == color" type = "color" :value = "item[column]" v-on:input = "modifyColumnForIndex(column, index)">
+							<td v-for = "column in columns" key = "columnizer">
+								<span v-if = "column == color">
+									<input type = "color" :class = "id + '-input-color'" :value = "item[column]" v-on:input = "modifyColumnForIndex(column, index)">
+									<button type = "button" v-on:click = "resetColor($event)" class = "btn btn-default btn-small">
+										<i class = "fa fa-undo"></i>
+									</button>
+								</span>
 								<input v-else type = "text" class = "form-control" :value = "item[column]" v-on:input = "modifyColumnForIndex(column, index)">
 							</td>
 							<td>
@@ -249,8 +276,24 @@ Vue.component("json-table", {
 		removeRow: function(index) {
 			eval(`${this.absolutePath}.splice(index, 1)`);
 		},
-		modifyColumnForIndex: function(column, index) {
-			eval(`${this.absolutePath}[index][column] = event.target.value`);
+		modifyColumnForIndex: function(column, index, value) {
+			if (!value) value = event.target.value;
+			eval(`${this.absolutePath}[index][column] = value`);
+		},
+		resetColor: function(event) {
+			// Reset the input element to its defaultValue (assigned in mounted)
+			let input = null;
+			if (event.srcElement.localName == "button") {
+				input = event.srcElement.previousElementSibling;
+			}
+			else if (event.srcElement.localName == "i") {
+				input = event.srcElement.parentElement.previousElementSibling;
+			}
+			else {
+				console.log("FAIL: event came from unknown element");
+				return;
+			}
+			input.value = input.getAttribute("defaultValue");
 		}
 	}
 });
@@ -301,6 +344,9 @@ Vue.component("json-repeat", {
 	props: ["name", "path", "id", "help"],
 	created: function() {
 		this.items = eval(`this.$parent.json${this.path}`);
+		let self = this;
+		bus.$on("sanity-check", function() {
+		});
 	},
 	template: `
 		<div :id = "id">
@@ -314,6 +360,7 @@ Vue.component("json-repeat", {
 				<slot :item = "item" :index = "index"></slot>
 			</div>
 			<button type = "button" v-on:click = "addRow" class = "btn btn-success btn-add-row pull-right"><i class = "fa fa-plus"></i> Add</button>
+			<button type = "button" v-on:click = "removeRow(1)" class = "btn btn-success btn-add-row pull-right">WTF</button>	
 		</div>
 	`,
 	data: () => {
@@ -323,12 +370,14 @@ Vue.component("json-repeat", {
 	},
 	methods: {
 		addRow: function() {
-			lastRow = eval(`this.$parent.json${this.path}[this.$parent.json${this.path}.length - 1]`);
+			let lastRow = eval(`this.$parent.json${this.path}[this.$parent.json${this.path}.length - 1]`);
+			lastRow = Object.assign({}, lastRow);
 			eval(`this.$parent.json${this.path}.push(lastRow)`);
 			this.$forceUpdate();
 		},
 		removeRow: function(index) {
 			eval(`this.$parent.json${this.path}.splice(index, 1)`);
+			bus.$emit("sanity-check");
 			this.$forceUpdate();
 		}
 	}

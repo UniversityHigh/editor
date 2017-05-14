@@ -10,18 +10,26 @@
 	<script src = "js/globals.js"></script>
 	<script src = "js/jumpstart.js" defer></script>
 	<script>
+		bus.$on("sanity-check", () => {
+			let departmentsJSON = vm.$children[1].json.departments.departments;
+			let names = departmentsJSON.map((department) => department.name);
+			console.log(names);
+		});
 		bus.$on("save", () => {
 			let departmentsJSON = vm.$children[1].json.departments.departments;
 			let names = departmentsJSON.map((department) => department.name);
 			console.log(names);
-			let newAcademicsJSON = {};
+			let sublinks = [];
 			for (i in names) {
 				let name = names[i];
-				newAcademicsJSON[name] = name.toLowerCase().trim().replace(/\s/g, "");
+				sublinks.push({
+					"name": name,
+					"nav": name.toLowerCase().trim().replace(/\s/g, "")
+				});
 			}
-			console.log(newAcademicsJSON);
 			let globalsJSON = ipcRenderer.sendSync("getJSONForPage", "globals");
-			globalsJSON["navbar"]["links"]["Academics"][1] = newAcademicsJSON;
+			globalsJSON["navbar"]["links"][1]["subLinks"] = sublinks;
+			console.log(JSON.stringify(globalsJSON));
 			ipcRenderer.send("setJSONForPage", "globals", globalsJSON);
 		});
 	</script>
