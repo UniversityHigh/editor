@@ -117,11 +117,6 @@ Vue.component("json-form", {
 			ipcRenderer.send("setJSONForPage", this.page, this.json);
 		});
 	},
-	methods: {
-		interpret: function(str) {
-			return eval(str);
-		}
-	},
 	data: () => {
 		return {
 			json: "",
@@ -132,18 +127,13 @@ Vue.component("json-form", {
 Vue.component("json-string", {
 	props: ["name", "path", "id", "big", "help"],
 	created: function() {
-		parentFound = false;
 		parents = 1;
-		while (!parentFound) {
-			if (eval(this.absolutePath) !== undefined) {
-				parentFound = true;
-			} else {
-				parents += 1;
-				this.absolutePath = `this.${'$parent.'.repeat(parents)}json`;
-			}
+		while (eval(this.absolutePath) === undefined) {
+			parents += 1;
+			this.absolutePath = `this.${"$parent.".repeat(parents)}json`;
 		}
 		this.absolutePath = `${this.absolutePath}${this.path}`;
-		this.initialValue = eval(this.absolutePath); // hax but it works
+		this.initialValue = eval(this.absolutePath);
 	},
 	methods: {
 		update: function() {
@@ -170,18 +160,14 @@ Vue.component("json-string", {
 Vue.component("json-checkbox", {
 	props: ["name", "path", "id", "help"],
 	created: function() {
-		parentFound = false;
 		parents = 1;
-		while (!parentFound) {
-			if (eval(this.absolutePath) !== undefined) {
-				parentFound = true;
-			} else {
-				parents += 1;
-				this.absolutePath = `this.${'$parent.'.repeat(parents)}json`;
-			}
+		while (eval(this.absolutePath) === undefined) {
+			parents += 1;
+			this.absolutePath = `this.${"$parent.".repeat(parents)}json`;
 		}
+
 		this.absolutePath = `${this.absolutePath}${this.path}`;
-		this.initialValue = eval(this.absolutePath); // hax but it works
+		this.initialValue = eval(this.absolutePath);
 	},
 	methods: {
 		update: function() {
@@ -207,16 +193,10 @@ Vue.component("json-checkbox", {
 Vue.component("json-table", {
 	props: ["name", "id", "path", "columns", "color", "help"],
 	created: function() {
-		this.absolutePath = "this.$parent.json";
-		parentFound = false;
 		parents = 1;
-		while (!parentFound) {
-			if (eval(this.absolutePath) !== undefined) {
-				parentFound = true;
-			} else {
-				parents += 1;
-				this.absolutePath = `this.${'$parent.'.repeat(parents)}json`;
-			}
+		while (eval(this.absolutePath) === undefined) {
+			parents += 1;
+			this.absolutePath = `this.${"$parent.".repeat(parents)}json`;
 		}
 		this.absolutePath = `${this.absolutePath}${this.path}`;
 	},
@@ -295,6 +275,12 @@ Vue.component("json-table", {
 			}
 			input.value = input.getAttribute("defaultValue");
 		}
+	},
+	data: () => {
+		return {
+			initialValue: "",
+			absolutePath: "this.$parent.json"
+		}
 	}
 });
 
@@ -344,15 +330,12 @@ Vue.component("json-repeat", {
 	props: ["name", "path", "id", "help"],
 	created: function() {
 		this.items = eval(`this.$parent.json${this.path}`);
-		let self = this;
-		bus.$on("sanity-check", function() {
-		});
 	},
 	template: `
 		<div :id = "id">
 			<label :for = "id">{{name}}</label>
 			<p v-if = "help" class = "help-block" v-html = "help"></p>
-			<div class = "well" v-for = "item, index in items">
+			<div class = "well" v-for = "item, index in items" :key="item">
 				<button type = "button" v-if = "items.length > 1" v-on:click = "removeRow(index)" class = "btn btn-small btn-danger pull-right">
 					<i class = "fa fa-minus-circle"></i>
 				</button>
@@ -364,21 +347,17 @@ Vue.component("json-repeat", {
 	`,
 	data: () => {
 		return {
+			items: "",
 			initialValue: ""
 		}
 	},
 	methods: {
 		addRow: function() {
-			let lastRow = eval(`this.$parent.json${this.path}[this.$parent.json${this.path}.length - 1]`);
-			lastRow = Object.assign({}, lastRow);
+			let lastRow = Object.assign({}, eval(`this.$parent.json${this.path}[this.$parent.json${this.path}.length - 1]`));
 			eval(`this.$parent.json${this.path}.push(lastRow)`);
-			this.$forceUpdate();
 		},
 		removeRow: function(index) {
-			//eval(`this.$parent.json${this.path}.splice(index, 1)`);
 			eval(`Vue.delete(this.$parent.json${this.path}, index)`);
-			bus.$emit("sanity-check");
-			this.$forceUpdate();
 		}
 	}
 });
