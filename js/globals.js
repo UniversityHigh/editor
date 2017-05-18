@@ -360,7 +360,6 @@ Vue.component("json-repeat", {
 				<slot :item = "item" :index = "index"></slot>
 			</div>
 			<button type = "button" v-on:click = "addRow" class = "btn btn-success btn-add-row pull-right"><i class = "fa fa-plus"></i> Add</button>
-			<button type = "button" v-on:click = "removeRow(1)" class = "btn btn-success btn-add-row pull-right">WTF</button>	
 		</div>
 	`,
 	data: () => {
@@ -376,7 +375,8 @@ Vue.component("json-repeat", {
 			this.$forceUpdate();
 		},
 		removeRow: function(index) {
-			eval(`this.$parent.json${this.path}.splice(index, 1)`);
+			//eval(`this.$parent.json${this.path}.splice(index, 1)`);
+			eval(`Vue.delete(this.$parent.json${this.path}, index)`);
 			bus.$emit("sanity-check");
 			this.$forceUpdate();
 		}
