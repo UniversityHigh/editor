@@ -13,7 +13,6 @@
 		bus.$on("save", () => {
 			let departmentsJSON = vm.$children[1].json.departments.departments;
 			let names = departmentsJSON.map((department) => department.name);
-			console.log(names);
 			let sublinks = [];
 			for (i in names) {
 				let name = names[i];
@@ -44,10 +43,10 @@
 				<json-string name = "Section Lead" path = "['departments']['lead']"></json-string>
 				<json-repeat name = "Departments" path = "['departments']['departments']">
 					<template scope = "parent">
-						 <json-string name = "Name" :path = "`['departments']['departments'][${parent.index}]['name']`"></json-string>
+						<json-string name = "Name" :path = "`['departments']['departments'][${parent.index}]['name']`"></json-string>
 						<json-string name = "Lead" :path = "`['departments']['departments'][${parent.index}]['lead']`"></json-string>
 						<json-string name = "Description" :path = "`['departments']['departments'][${parent.index}]['description']`" big = true></json-string>
-						<b>{{ parent.item.courses.length }} Course(s)</b> 
+						<b>{{ parent.item.courses.length }} Course(s)</b> 	
 					</template>
 				</json-repeat>
 			</json-form>

@@ -103,94 +103,95 @@ Vue.component("navbar", {
 		}
 	});
 
+function assign(object, path, value) {
+	if (typeof path === "string") {
+		path = path.match(new RegExp(/\w+/, "g"));
+	}
+	
+	if (path.length > 1) {
+		let e = path.shift();
+		assign(object[e] = typeof object[e] === "object" ? object[e] : {}, path, value);
+	} else {
+		object[path[0]] = value;
+	}
+}
+
+let rootJson = [];
+
+Vue.mixin({
+	computed: {
+		rootJson: {
+			get: function () {
+				return rootJson;
+			},
+			set: function (value) {
+				rootJson = value;
+			}
+		}
+	}
+});
+
+const relativeJson = {
+	computed: {
+		relativeJson: {
+			get: function() {
+				let relativeJson = this.rootJson;
+				for(level of this.path.match(new RegExp(/\w+/, "g"))) {
+					relativeJson = relativeJson[level];
+				}
+				return relativeJson;
+			},
+			set: function(value) {
+				assign(this.rootJson, this.path, value);
+			}
+		}
+	}
+}
 
 Vue.component("json-form", {
 	props: ["page", "id"],
 	template: `
 		<form :id = "id">
-			<slot :json = "json"></slot>
+			<slot></slot>
 		</form>
 	`,
 	created: function() {
-		this.json = ipcRenderer.sendSync("getJSONForPage", this.page);
+		this.rootJson = ipcRenderer.sendSync("getJSONForPage", this.page);
 		bus.$on("save", () => {
-			ipcRenderer.send("setJSONForPage", this.page, this.json);
+			ipcRenderer.send("setJSONForPage", this.page, this.rootJson);
 		});
 	},
-	data: () => {
-		return {
-			json: "",
-		}
-	}
 });
 
 Vue.component("json-string", {
+	mixins: [relativeJson],
 	props: ["name", "path", "id", "big", "help"],
-	created: function() {
-		parents = 1;
-		while (eval(this.absolutePath) === undefined) {
-			parents += 1;
-			this.absolutePath = `this.${"$parent.".repeat(parents)}json`;
-		}
-		this.absolutePath = `${this.absolutePath}${this.path}`;
-		this.initialValue = eval(this.absolutePath);
-	},
-	methods: {
-		update: function() {
-			eval(`${this.absolutePath} = event.target.value`);
-		}
-	},
 	template: `
 		<div class = "form-group">
 			<label :for = "id">{{name}}</label>
-			<textarea v-if = "big" class = "form-control" v-on:input = "update">{{ initialValue }}</textarea>
-			<input v-else type = "text" class = "form-control" :id = "id" :value = "initialValue" v-on:input = "update">
+			<textarea v-if = "big" class = "form-control" v-model="relativeJson"></textarea>
+			<input v-else type = "text" class = "form-control" :id = "id" v-model="relativeJson">
 			<p v-if = "help" class = "help-block">{{help}}</p>
 		</div>
-	`,
-	data: () => {
-		return {
-			initialValue: "",
-			absolutePath: "this.$parent.json"
-		}
-	}
+	`
 });
 
 
 Vue.component("json-checkbox", {
+	mixins: [relativeJson],
 	props: ["name", "path", "id", "help"],
-	created: function() {
-		parents = 1;
-		while (eval(this.absolutePath) === undefined) {
-			parents += 1;
-			this.absolutePath = `this.${"$parent.".repeat(parents)}json`;
-		}
-
-		this.absolutePath = `${this.absolutePath}${this.path}`;
-		this.initialValue = eval(this.absolutePath);
-	},
-	methods: {
-		update: function() {
-			eval(`${this.absolutePath} = event.target.checked`);
-		}
-	},
 	template: `
 		<div class = "checkbox">
 			<label :for = "id">
-				<input type = "checkbox" :id = "id" :checked = "initialValue" v-on:change = "update"> {{name}}
+				<input type = "checkbox" :id = "id" v-model="relativeJson"> {{name}}
 			</label>
 			<p v-if = "help" class = "help-block">{{help}}</p>
 		</div>
-	`,
-	data: () => {
-		return {
-			initialValue: "",
-			absolutePath: "this.$parent.json"
-		}
-	}
+	`
 });
 
 Vue.component("json-table", {
+	mixins: [relativeJson],
 	props: ["name", "id", "path", "columns", "color", "help"],
 	created: function() {
 		parents = 1;
@@ -226,7 +227,7 @@ Vue.component("json-table", {
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for = "item, index in getTable()">
+						<tr v-for = "item, index in relativeJson">
 							<td v-for = "column in columns" key = "columnizer">
 								<span v-if = "column == color">
 									<input type = "color" :class = "id + '-input-color'" :value = "item[column]" v-on:input = "modifyColumnForIndex(column, index)">
@@ -237,7 +238,7 @@ Vue.component("json-table", {
 								<input v-else type = "text" class = "form-control" :value = "item[column]" v-on:input = "modifyColumnForIndex(column, index)">
 							</td>
 							<td>
-								<button type = "button" v-if = "getTable().length > 1" v-on:click = "removeRow(index)" class = "btn btn-small btn-danger"><i class = "fa fa-minus-circle"></i></button>
+								<button type = "button" v-if = "relativeJson.length > 1" v-on:click = "removeRow(index)" class = "btn btn-small btn-danger"><i class = "fa fa-minus-circle"></i></button>
 							</td>
 						</tr>
 					</tbody>
@@ -247,18 +248,24 @@ Vue.component("json-table", {
 		</div>
 	`,
 	methods: {
-		getTable: function() {
-			return eval(this.absolutePath);
-		},
 		addRow: function() {
-			eval(`${this.absolutePath}.push({})`);
+			let newRow = this.relativeJson;
+			newRow.push({});
+			this.relativeJson = newRow;
+			this.$forceUpdate();
 		},
 		removeRow: function(index) {
-			eval(`${this.absolutePath}.splice(index, 1)`);
+			let removedRow = this.relativeJson;
+			removedRow.splice(index, 1);
+			this.relativeJson = removedRow;
+			this.$forceUpdate();
 		},
 		modifyColumnForIndex: function(column, index, value) {
 			if (!value) value = event.target.value;
-			eval(`${this.absolutePath}[index][column] = value`);
+			let modified = this.relativeJson;
+			modified[index][column] = value;
+			this.relativeJson = modified;
+			this.$forceUpdate();
 		},
 		resetColor: function(event) {
 			// Reset the input element to its defaultValue (assigned in mounted)
@@ -275,16 +282,11 @@ Vue.component("json-table", {
 			}
 			input.value = input.getAttribute("defaultValue");
 		}
-	},
-	data: () => {
-		return {
-			initialValue: "",
-			absolutePath: "this.$parent.json"
-		}
 	}
 });
 
 Vue.component("json-simple-table", {
+	mixins: [relativeJson],
 	props: ["name", "id", "path", "column", "maxlength", "help"],
 	template: `
 		<div class = "table-container">
@@ -299,9 +301,9 @@ Vue.component("json-simple-table", {
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for = "item, index in getTable()">
+						<tr v-for = "item, index in relativeJson">
 							<td style = "width: 90vw"><input type = "text" class = "form-control" :value = "item" :maxlength = "maxlength" v-on:input = "modifyIndex(index)"></td>
-							<td><button v-if = "getTable().length > 1" type = "button" v-on:click = "removeRow(index)" class = "btn btn-small btn-danger"><i class = "fa fa-minus-circle"></i></button></td>
+							<td><button v-if = "relativeJson).length > 1" type = "button" v-on:click = "removeRow(index)" class = "btn btn-small btn-danger"><i class = "fa fa-minus-circle"></i></button></td>
 						</tr>
 					</tbody>
 				</table>
@@ -310,33 +312,37 @@ Vue.component("json-simple-table", {
 		</div>
 	`,
 	methods: {
-		getTable: function() {
-			return eval(`this.$parent.json${this.path}`);
-		},
 		addRow: function() {
-			eval(`this.$parent.json${this.path}.push("")`);
+			let newRow = this.relativeJson;
+			newRow.push({});
+			this.relativeJson = newRow;
+			this.$forceUpdate();
 		},
 		removeRow: function(index) {
-			eval(`this.$parent.json${this.path}.splice(index, 1)`);
+			let removedRow = this.relativeJson;
+			removedRow.splice(index, 1);
+			this.relativeJson = removedRow;
+			this.$forceUpdate();
 		},
 		modifyIndex: function(index) {
-			eval(`this.$parent.json${this.path}[index] = event.target.value`);
+			let modified = this.relativeJson;
+			modified[index] = event.target.value;
+			this.relativeJson = modified;
+			this.$forceUpdate();
 		}
 	}
 });
 
 
 Vue.component("json-repeat", {
+	mixins: [relativeJson],
 	props: ["name", "path", "id", "help"],
-	created: function() {
-		this.items = eval(`this.$parent.json${this.path}`);
-	},
 	template: `
 		<div :id = "id">
 			<label :for = "id">{{name}}</label>
 			<p v-if = "help" class = "help-block" v-html = "help"></p>
-			<div class = "well" v-for = "item, index in items" :key="item">
-				<button type = "button" v-if = "items.length > 1" v-on:click = "removeRow(index)" class = "btn btn-small btn-danger pull-right">
+			<div class = "well" v-for = "item, index in relativeJson" :key="item">
+				<button type = "button" v-if = "relativeJson.length > 1" v-on:click = "removeRow(index)" class = "btn btn-small btn-danger pull-right">
 					<i class = "fa fa-minus-circle"></i>
 				</button>
 				<br />
@@ -345,25 +351,18 @@ Vue.component("json-repeat", {
 			<button type = "button" v-on:click = "addRow" class = "btn btn-success btn-add-row pull-right"><i class = "fa fa-plus"></i> Add</button>
 		</div>
 	`,
-	data: () => {
-		return {
-			items: "",
-			initialValue: ""
-		}
-	},
 	methods: {
 		addRow: function() {
-			let lastRow = Object.assign({}, eval(`this.$parent.json${this.path}[this.$parent.json${this.path}.length - 1]`));
-			eval(`this.$parent.json${this.path}.push(lastRow)`);
+			let modified = this.relativeJson;
+			modified.push(Object.assign({}, modified[modified.length - 1]));
+			this.relativeJson = modified;
+			this.$forceUpdate();
 		},
 		removeRow: function(index) {
-			eval(`Vue.delete(this.$parent.json${this.path}, index)`);
+			let modified = this.relativeJson;
+			modified.splice(index, 1);
+			this.relativeJson = modified;
+			this.$forceUpdate();
 		}
 	}
-});
-
-Vue.component("json-debug", {
-	template: `
-		<p>{{this.$parent.json}}</p>
-	`
 });
