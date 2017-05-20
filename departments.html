@@ -11,7 +11,7 @@
 	<script src = "js/jumpstart.js" defer></script>
 	<script>
 		bus.$on("save", () => {
-			let departmentsJSON = vm.$children[1].json.departments.departments;
+			let departmentsJSON = vm.$children[1].rootJson.departments.departments;
 			let names = departmentsJSON.map((department) => department.name);
 			let sublinks = [];
 			for (i in names) {

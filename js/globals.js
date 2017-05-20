@@ -103,6 +103,19 @@ Vue.component("navbar", {
 		}
 	});
 
+function find(object, path) {
+	if (typeof path === "string") {
+		path = path.match(new RegExp(/\w+/, "g"));
+	}
+	
+	if (path.length > 1) {
+		let e = path.shift();
+		return find(object[e] = typeof object[e] === "object" ? object[e] : {}, path);
+	} else {
+		return object[path[0]];
+	}
+}
+
 function assign(object, path, value) {
 	if (typeof path === "string") {
 		path = path.match(new RegExp(/\w+/, "g"));
@@ -116,33 +129,24 @@ function assign(object, path, value) {
 	}
 }
 
-let rootJson = [];
-
-Vue.mixin({
-	computed: {
-		rootJson: {
-			get: function () {
-				return rootJson;
-			},
-			set: function (value) {
-				rootJson = value;
+const relativeJson = {
+	methods: {
+		getRootJson: function(parent) {
+			if(!parent) parent = this.$parent;
+			if(parent.rootJson === undefined) {
+				return this.getRootJson(parent.$parent);
+			} else {
+				return parent.rootJson;
 			}
 		}
-	}
-});
-
-const relativeJson = {
+	},
 	computed: {
 		relativeJson: {
 			get: function() {
-				let relativeJson = this.rootJson;
-				for(level of this.path.match(new RegExp(/\w+/, "g"))) {
-					relativeJson = relativeJson[level];
-				}
-				return relativeJson;
+				return find(this.getRootJson(), this.path);
 			},
 			set: function(value) {
-				assign(this.rootJson, this.path, value);
+				assign(this.getRootJson(), this.path, value);
 			}
 		}
 	}
@@ -161,6 +165,11 @@ Vue.component("json-form", {
 			ipcRenderer.send("setJSONForPage", this.page, this.rootJson);
 		});
 	},
+	data: () => {
+		return {
+			rootJson: {}
+		}
+	}
 });
 
 Vue.component("json-string", {
@@ -193,14 +202,6 @@ Vue.component("json-checkbox", {
 Vue.component("json-table", {
 	mixins: [relativeJson],
 	props: ["name", "id", "path", "columns", "color", "help"],
-	created: function() {
-		parents = 1;
-		while (eval(this.absolutePath) === undefined) {
-			parents += 1;
-			this.absolutePath = `this.${"$parent.".repeat(parents)}json`;
-		}
-		this.absolutePath = `${this.absolutePath}${this.path}`;
-	},
 	mounted: function() {
 		// Go through each input color and set its starting value to its defaultValue
 		if (this.color) {
@@ -249,23 +250,14 @@ Vue.component("json-table", {
 	`,
 	methods: {
 		addRow: function() {
-			let newRow = this.relativeJson;
-			newRow.push({});
-			this.relativeJson = newRow;
-			this.$forceUpdate();
+			this.relativeJson.push({});
 		},
 		removeRow: function(index) {
-			let removedRow = this.relativeJson;
-			removedRow.splice(index, 1);
-			this.relativeJson = removedRow;
-			this.$forceUpdate();
+			this.relativeJson.splice(index, 1);
 		},
 		modifyColumnForIndex: function(column, index, value) {
 			if (!value) value = event.target.value;
-			let modified = this.relativeJson;
-			modified[index][column] = value;
-			this.relativeJson = modified;
-			this.$forceUpdate();
+			this.relativeJson[index][column] = value;
 		},
 		resetColor: function(event) {
 			// Reset the input element to its defaultValue (assigned in mounted)
@@ -313,22 +305,13 @@ Vue.component("json-simple-table", {
 	`,
 	methods: {
 		addRow: function() {
-			let newRow = this.relativeJson;
-			newRow.push({});
-			this.relativeJson = newRow;
-			this.$forceUpdate();
+			this.relativeJson.push({});
 		},
 		removeRow: function(index) {
-			let removedRow = this.relativeJson;
-			removedRow.splice(index, 1);
-			this.relativeJson = removedRow;
-			this.$forceUpdate();
+			this.relativeJson.splice(index, 1);
 		},
 		modifyIndex: function(index) {
-			let modified = this.relativeJson;
-			modified[index] = event.target.value;
-			this.relativeJson = modified;
-			this.$forceUpdate();
+			this.relativeJson[index] = event.target.value;
 		}
 	}
 });
@@ -353,16 +336,10 @@ Vue.component("json-repeat", {
 	`,
 	methods: {
 		addRow: function() {
-			let modified = this.relativeJson;
-			modified.push(Object.assign({}, modified[modified.length - 1]));
-			this.relativeJson = modified;
-			this.$forceUpdate();
+			this.relativeJson.push(Object.assign({}, this.relativeJson[this.relativeJson.length - 1]));
 		},
 		removeRow: function(index) {
-			let modified = this.relativeJson;
-			modified.splice(index, 1);
-			this.relativeJson = modified;
-			this.$forceUpdate();
+			this.relativeJson.splice(index, 1);
 		}
 	}
 });
