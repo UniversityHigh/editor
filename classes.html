@@ -20,10 +20,10 @@
 		<navbar preview-page = "academics"></navbar>
 		<div class = "container-fluid">
 			<json-form page = "academics">
-				<template scope = "uberParent">
+				<template scope = "parent">
 					<h3>Select Department</h3>
-					<select v-on:change = "changeDepartment">
-				 		<option v-for = "department, index in uberParent.json.departments.departments" :value = "index" :selected = "index == selectedDepartment">{{department.name}}</option>
+					<select v-model = "selectedDepartment">
+				 		<option v-for = "department, index in parent.rootJson.departments.departments" :value = "index" :selected = "index == selectedDepartment">{{department.name}}</option>
 					</select>
 					<br />
 					<br />
@@ -36,7 +36,6 @@
 							<json-string name = "Syllabus Link" :path = "`['departments']['departments'][${selectedDepartment}]['courses'][${parent.index}]['syllabus']`"></json-string>
 							<json-string name = "Assignments Link" :path = "`['departments']['departments'][${selectedDepartment}]['courses'][${parent.index}]['assignments']`"></json-string>
 							<json-string name = "Teacher Website Link" :path = "`['departments']['departments'][${selectedDepartment}]['courses'][${parent.index}]['teacherWebsite']`"></json-string>
-							<json-string name = "Assignments Link" :path = "`['departments']['departments'][${selectedDepartment}]['courses'][${parent.index}]['assignments']`"></json-string>
 							<json-string name = "More Information Link" :path = "`['departments']['departments'][${selectedDepartment}]['courses'][${parent.index}]['moreInformation']`"></json-string>
 							<json-checkbox name = "AP" :path = "`['departments']['departments'][${selectedDepartment}]['courses'][${parent.index}]['isAP']`"></json-checkbox>
 							<json-checkbox name = "ECE" :path = "`['departments']['departments'][${selectedDepartment}]['courses'][${parent.index}]['isECE']`"></json-checkbox>
@@ -51,16 +50,6 @@
 			el: "#main",
 			data: {
 				"selectedDepartment": 0
-			},
-			created: function() {
-				if (window.location.search) {
-					this.selectedDepartment = window.location.search.substring(12);
-				}
-			},
-			methods: {
-				changeDepartment: function() {
-					window.location.href = `classes.html?department=${event.target.value}`;
-				}
 			}
 		});
 	</script>

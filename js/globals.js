@@ -156,7 +156,7 @@ Vue.component("json-form", {
 	props: ["page", "id"],
 	template: `
 		<form :id = "id">
-			<slot></slot>
+			<slot :rootJson = "rootJson"></slot>
 		</form>
 	`,
 	created: function() {
