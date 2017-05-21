@@ -1,7 +1,8 @@
 * Content-length issue
-* Expando for json-string and json-table
+* Replace some tables with json-repeat
 * Push changes
+* Help text for most components
 * CONFIRMATIONS FOR DELETES
 * Fall and Winter sections
 * Implement GitHub npm
-* Departments wtf?
+* Revert functionality

@@ -272,7 +272,7 @@ Vue.component("json-table", {
 				console.log("FAIL: event came from unknown element");
 				return;
 			}
-			input.value = input.getAttribute("defaultValue");
+			input.value = input.getAtt ribute("defaultValue");
 		}
 	}
 });
@@ -295,7 +295,7 @@ Vue.component("json-simple-table", {
 					<tbody>
 						<tr v-for = "item, index in relativeJson">
 							<td style = "width: 90vw"><input type = "text" class = "form-control" :value = "item" :maxlength = "maxlength" v-on:input = "modifyIndex(index)"></td>
-							<td><button v-if = "relativeJson).length > 1" type = "button" v-on:click = "removeRow(index)" class = "btn btn-small btn-danger"><i class = "fa fa-minus-circle"></i></button></td>
+							<td><button v-if = "relativeJson.length > 1" type = "button" v-on:click = "removeRow(index)" class = "btn btn-small btn-danger"><i class = "fa fa-minus-circle"></i></button></td>
 						</tr>
 					</tbody>
 				</table>
