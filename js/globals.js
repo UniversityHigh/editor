@@ -1,6 +1,7 @@
 const opn = require("opn");
 const fs = require("fs");
 const {ipcRenderer} = require("electron");
+const {dialog} = require("electron").remote;
 
 const bus = new Vue();
 
@@ -281,7 +282,17 @@ Vue.component("json-table", {
 			this.relativeJson.push({});
 		},
 		removeRow: function(index) {
-			this.relativeJson.splice(index, 1);
+			let self = this;
+			dialog.showMessageBox({
+				type: "warning",
+				buttons: ["Continue", "Cancel"],
+				title: "Confirm Action",
+				message: "Are you sure?"
+			}, (response) => {
+				if(!response) {
+					self.relativeJson.splice(index, 1);	
+				}
+			});
 		},
 		modifyColumnForIndex: function(column, index, value) {
 			if (!value) value = event.target.value;
@@ -336,7 +347,17 @@ Vue.component("json-simple-table", {
 			this.relativeJson.push({});
 		},
 		removeRow: function(index) {
-			this.relativeJson.splice(index, 1);
+			let self = this;
+			dialog.showMessageBox({
+				type: "warning",
+				buttons: ["Continue", "Cancel"],
+				title: "Confirm Action",
+				message: "Are you sure?"
+			}, (response) => {
+				if(!response) {
+					self.relativeJson.splice(index, 1);	
+				}
+			});
 		},
 		modifyIndex: function(index) {
 			this.relativeJson[index] = event.target.value;
@@ -367,7 +388,17 @@ Vue.component("json-repeat", {
 			this.relativeJson.push(Object.assign({}, this.relativeJson[this.relativeJson.length - 1]));
 		},
 		removeRow: function(index) {
-			this.relativeJson.splice(index, 1);
+			let self = this;
+			dialog.showMessageBox({
+				type: "warning",
+				buttons: ["Continue", "Cancel"],
+				title: "Confirm Action",
+				message: "Are you sure?"
+			}, (response) => {
+				if(!response) {
+					self.relativeJson.splice(index, 1);	
+				}
+			});
 		}
 	}
 });

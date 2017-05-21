@@ -20,6 +20,7 @@
   "dependencies": {
     "@uhsse/harponica": "^2.4.1",
     "adm-zip": "^0.4.7",
+    "alertifyjs": "^1.10.0",
     "electron": "^1.6.2",
     "electron-json-storage": "^3.0.5",
     "opn": "^4.0.2",
