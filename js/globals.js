@@ -180,11 +180,10 @@ Vue.component("json-string", {
 			<label :for = "id">{{name}}</label>
 			<textarea v-if = "big" class = "form-control" v-model="relativeJson"></textarea>
 			<input v-else type = "text" class = "form-control" :id = "id" v-model="relativeJson">
-			<p v-if = "help" class = "help-block">{{help}}</p>
+			<p v-if = "help" class = "help-block" v-html = "help"></p>
 		</div>
 	`
 });
-
 
 Vue.component("json-checkbox", {
 	mixins: [relativeJson],
@@ -195,6 +194,35 @@ Vue.component("json-checkbox", {
 				<input type = "checkbox" :id = "id" v-model="relativeJson"> {{name}}
 			</label>
 			<p v-if = "help" class = "help-block">{{help}}</p>
+		</div>
+	`
+});
+
+Vue.component("json-color", {
+	mixins: [relativeJson],
+	props: ["name", "path", "id", "help"],
+	created: function() {
+		this.initialColor = this.relativeJson;
+	},
+	methods: {
+		reset: function() {
+			this.$refs['colorPicker'].value = this.initialColor;
+		}	
+	},
+	data: function() {
+		return {
+			initialColor: "#ffffff"
+		}
+	},
+	template: `
+		<div class = "form-group">
+			<label :for = "id">{{name}}</label>
+			<br>
+			<input type = "color" :id = "id" v-model = "relativeJson" ref = "colorPicker" :defaultValue = "initialColor">
+			<button type = "button" v-on:click = "reset" class = "btn btn-default btn-small">
+				<i class = "fa fa-undo"></i>
+			</button>
+			<p v-if = "help" class = "help-block" v-html = "help"></p>
 		</div>
 	`
 });
@@ -272,7 +300,7 @@ Vue.component("json-table", {
 				console.log("FAIL: event came from unknown element");
 				return;
 			}
-			input.value = input.getAtt ribute("defaultValue");
+			input.value = input.getAttribute("defaultValue");
 		}
 	}
 });

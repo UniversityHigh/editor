@@ -9,6 +9,16 @@
 	<script src = "assets/js/vue.js"></script>
 	<script src = "js/globals.js"></script>
 	<script src = "js/jumpstart.js" defer></script>
+	<style type = "text/css">
+		textarea {
+			height: 25vh !important;
+		}
+	</style>
+	<script>
+		function openGlyphPage() {
+			require('opn')('http://getbootstrap.com/components/#glyphicons');
+		}
+	</script>
 	<title>Editor</title>
 </head>
 <body>
@@ -17,18 +27,21 @@
 		<div class = "container-fluid">
 			<json-form page = "index">
 				<json-string name = "Name" id = "name" path = "['name']"></json-string>
-				<json-table name = "Qualities" 
-				id = "qualities"
-				path = "['qualities']" 
-				:columns = "['name', 'description', 'backgroundColor', 'glyph']"
-				color = "backgroundColor"
-				help = "The panel next to the gallery."
-				></json-table>
-				<json-table 
-				name = "Gallery" 
-				id = "gallery" 
-				path = "['gallery']" 
-				:columns = "['link', 'src', 'caption']">
+				<json-repeat name = "Qualities" :path = "['qualities']">
+					<template scope = "parent">
+						<json-string name = "Name" :path = "`['qualities'][${parent.index}]['name']`"></json-string>
+						<json-string name = "Description" :path = "`['qualities'][${parent.index}]['description']`" big = "true"></json-string>
+						<json-color name = "Background Color" :path = "`['qualities'][${parent.index}]['backgroundColor']`"></json-color>
+						<json-string name = "Glyph" :path = "`['qualities'][${parent.index}]['glyph']`" help = "Click <a onclick = 'openGlyphPage()'>here</a> to view more glyphs."></json-string>
+					</template>
+				</json-repeat>
+				<json-repeat name = "Gallery" :path = "['gallery']">
+					<template scope = "parent">
+						<json-string name = "External Link" :path = "`['gallery'][${parent.index}]['link']`"></json-string>
+						<json-string name = "Image Link" :path = "`['gallery'][${parent.index}]['src']`"></json-string>
+						<json-string name = "Caption" :path = "`['gallery'][${parent.index}]['caption']`" big = "true"></json-string>
+					</template>
+				</json-repeat>
 				</json-table>
 			</json-form>
 		</div>
