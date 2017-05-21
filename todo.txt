@@ -1,8 +1,13 @@
 * Content-length issue
-* Replace some tables with json-repeat
 * Push changes
 * Help text for most components
 * CONFIRMATIONS FOR DELETES
-* Fall and Winter sections
 * Implement GitHub npm
 * Revert functionality
+### Pages that need to be done
+* Alumni
+* Guidance
+* Fall and Winter sections for sports
+* SGC
+* Student Council
+* Resources
