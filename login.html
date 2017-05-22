@@ -8,18 +8,61 @@
 	<script src = "assets/js/bootstrap.js"></script>
 	<script src = "assets/js/vue.js"></script>
 	<script src = "js/globals.js"></script>
-	<script src = "js/jumpstart.js" defer></script>
 	<title>Editor</title>
 </head>
 <body>
 	<div id = "main">
-		<navbar preview-page = "academics"></navbar>
 		<div class = "container-fluid">
-			<json-form page = "globals">
-				<json-debug></json-debug>
-				<json-simple-table path = "['navbar']['links']['Academics'][1]"></json-simple-table>
-			</json-form>
+			<div class = "row">
+				<div class = "col-xs-8 col-xs-offset-2">
+					<div class = "panel panel-default">
+						<div class = "panel-heading">
+							<h3 class="panel-title">Log In to GitHub</h3>
+						</div>
+						<div class = "panel-body">
+							<form>
+								<div class="form-group">
+									<label for="exampleInputEmail1">Email address</label>
+									<input type="email" class="form-control" id="email" v-model="email" placeholder="Email">
+								</div>
+								<div class="form-group">
+									<label for="password">Password</label>
+									<input type="password" class="form-control" id="password" v-model="password" placeholder="Password">
+								</div>
+								<button type = "button" v-on:click = "test" class="btn btn-success">Log In</button>
+								<button class="btn btn-default">Forgot Password?</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
+	<script>
+		new Vue({
+			el: "#main",
+			data: {
+				"email": "",
+				"password": ""
+			},
+			methods: {
+				test: function() {
+					console.log("hm");
+					let gh = require("github");
+					let github = new gh({
+						headers: {
+							"user-agent": "UniversityHighEditor"
+						}
+					});
+					let r = github.authenticate({
+					  type: "basic",
+					  username: "bwa",
+					  password: "bwabwawa"
+					});
+					console.log(r);
+				}
+			}
+		});
+	</script>
 </body>
 </html>
