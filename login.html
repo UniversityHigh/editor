@@ -8,6 +8,12 @@
 	<script src = "assets/js/bootstrap.js"></script>
 	<script src = "assets/js/vue.js"></script>
 	<script src = "js/globals.js"></script>
+	<style>
+		.failure {
+			padding-top: 15px;
+			color: red;
+		}
+	</style>
 	<title>Editor</title>
 </head>
 <body>
@@ -29,8 +35,9 @@
 									<label for="password">Password</label>
 									<input type="password" class="form-control" id="password" v-model="password" placeholder="Password">
 								</div>
-								<button type = "button" v-on:click = "test" class="btn btn-success">Log In</button>
-								<button class="btn btn-default">Forgot Password?</button>
+								<button type = "button" v-on:click = "login" class="btn btn-success">Log In</button>
+								<button type = "button" class="btn btn-default" v-on:click = "forgotPassword">Forgot Password?</button>
+								<p class = "failure" v-if="failure">There was an error logging in - please try again. Error: {{failure}}</p>
 							</form>
 						</div>
 					</div>
@@ -39,27 +46,40 @@
 		</div>
 	</div>
 	<script>
+		let gh = require("github");
+		let github = new gh({
+			headers: {
+				"user-agent": "UniversityHighEditor"
+			}
+		});
 		new Vue({
 			el: "#main",
 			data: {
-				"email": "",
-				"password": ""
+				email: null,
+				password: null,
+				failure: null
 			},
 			methods: {
-				test: function() {
-					console.log("hm");
-					let gh = require("github");
-					let github = new gh({
-						headers: {
-							"user-agent": "UniversityHighEditor"
+				login: function() {
+					if (!this.email || !this.password) {
+						this.failure = "Email and password fields must be filled in.";
+						return;
+					}
+					github.authenticate({
+						type: "basic",
+						username: this.email,
+						password: this.password
+					});
+					let self = this;
+					github.users.get({}, function(err, res) {
+						if (err) {
+							console.log(err);
+							self.failure = JSON.parse(err.message).message;
 						}
 					});
-					let r = github.authenticate({
-					  type: "basic",
-					  username: "bwa",
-					  password: "bwabwawa"
-					});
-					console.log(r);
+				},
+				forgotPassword: function() {
+					require("opn")("https://github.com/password_reset");
 				}
 			}
 		});
