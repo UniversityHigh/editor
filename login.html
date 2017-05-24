@@ -7,7 +7,6 @@
 	<script src = "assets/js/jquery.js" onload = "window.$ = window.jQuery = module.exports;"></script>
 	<script src = "assets/js/bootstrap.js"></script>
 	<script src = "assets/js/vue.js"></script>
-	<script src = "js/globals.js"></script>
 	<style>
 		.failure {
 			padding-top: 15px;
@@ -18,6 +17,13 @@
 </head>
 <body>
 	<div id = "main">
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">UHSSE Editor</a>
+				</div>
+			</div>
+		</nav>
 		<div class = "container-fluid">
 			<div class = "row">
 				<div class = "col-xs-8 col-xs-offset-2">
@@ -46,7 +52,8 @@
 		</div>
 	</div>
 	<script>
-		let gh = require("github");
+		const gh = require("github");
+		const {ipcRenderer} = require("electron");
 		let github = new gh({
 			headers: {
 				"user-agent": "UniversityHighEditor"
@@ -75,6 +82,10 @@
 						if (err) {
 							console.log(err);
 							self.failure = JSON.parse(err.message).message;
+						}
+						else {
+							ipcRenderer.send("setCredentials", this.email, this.password);
+							window.location.assign("startup.html");
 						}
 					});
 				},

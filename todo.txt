@@ -1,9 +1,8 @@
 * Content-length issue
 * Push changes
 * Help text for most components
-* CONFIRMATIONS FOR DELETES
-* Implement GitHub npm
 * Revert functionality
+* Way to change backend server port
 ### Pages that need to be done
 * Alumni
 * Guidance

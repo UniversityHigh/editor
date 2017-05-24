@@ -5,8 +5,17 @@ const backendModule = require("./backend");
 
 let win;
 let backend = new backendModule();
-let port = 8080; // Add some way to change this at some point
+let port = 8080;
+let credentials = {
+	username: null,
+	password: null
+};
 
+ipcMain.on("setCredentials", (event, username, password) => {
+	credentials.username = username;
+	credentials.password = password;
+});
+ipcMain.on("getCredentials", (event) => event.returnValue = credentials);
 ipcMain.on("checkForRepo", (event) => event.returnValue = backend.checkForRepo());
 ipcMain.on("fetchRepo", (event) => {
 	backend.fetchRepo(
@@ -43,7 +52,7 @@ function createWindow() {
 		height: 600,
 		icon: __dirname + "/img/icon.ico"
 	});
-	win.loadURL(`file:///${__dirname}/startup.html`);
+	win.loadURL(`file:///${__dirname}/login.html`);
 	win.setMenuBarVisibility(false);
 	win.webContents.openDevTools();
 	win.on("closed", () => {
