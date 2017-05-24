@@ -25,7 +25,6 @@ Vue.component("navbar", {
 	 					<li class="dropdown">
 	 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">{{ paths[path] }} <span class="caret"></span></a>
 	 						<ul class="dropdown-menu">
-	 							<li-nk :from = "path" to = "login.html" :paths = "paths"></li-nk>
 	 							<li-nk :from = "path" to = "home.html" :paths = "paths"></li-nk>
 	 							<li-nk :from = "path" to = "banners.html" :paths = "paths"></li-nk>
 	 							<li-nk :from = "path" to = "annoucements.html" :paths = "paths"></li-nk>
