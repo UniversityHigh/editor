@@ -46,7 +46,7 @@ ipcMain.on("setJSONForPage", (event, page, json) => {
 		if (err) win.webContents.send("setJSONForPageFailed", err);
 	});
 });
-ipcMain.on("getFile", (event, path) => event.returnValue = backend.getFile(path));
+ipcMain.on("getFileContentsBase64", (event, path) => event.returnValue = backend.getFileContentsBase64(path));
 
 function createWindow() {
 	win = new BrowserWindow({

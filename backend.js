@@ -160,8 +160,8 @@ class Backend {
 		fs.writeFile(this.localsPath, JSON.stringify(json, null, 2), (err) => callback(err)); // beautify w/ 2 tabs
 	}
 
-	getFile(filePath) {
-		return fs.readFileSync(path.join(this.repoPath, filePath));
+	getFileContentsBase64(filePath) {
+		return fs.readFileSync(path.join(this.repoPath, filePath), "base64");
 	}
 
 	compile(callback) {
