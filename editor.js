@@ -37,12 +37,16 @@ ipcMain.on("startServer", (event) => {
 		win.webContents.send("serverStarted");
 	});
 });
+ipcMain.on("compile", (event) => {
+	backend.compile(() => win.webContents.send("compileFinished"));
+});
 ipcMain.on("getJSONForPage", (event, page) => event.returnValue = backend.getJSONForPage(page));
 ipcMain.on("setJSONForPage", (event, page, json) => {
 	backend.setJSONForPage(page, json, (err) => {
 		if (err) win.webContents.send("setJSONForPageFailed", err);
 	});
 });
+ipcMain.on("getFile", (event, path) => event.returnValue = backend.getFile(path));
 
 function createWindow() {
 	win = new BrowserWindow({

@@ -48,11 +48,12 @@ Vue.component("navbar", {
 	 					</li>
 	 				</ul>
 	 				<form class="navbar-form navbar-right">
+	 					<button v-on:click = "refresh" type = "button" class = "btn btn-default"><i class = "fa fa-refresh"></i></button>
 	 					<button v-on:click = "undo" type = "button" class = "btn btn-default"><i class = "fa fa-undo"></i></button>
 	 					<button v-on:click = "redo" type = "button" class = "btn btn-default"><i class = "fa fa-repeat"></i></button>
 	 					<button v-on:click = "save" type = "button" class = "btn btn-warning">Save</button>
 	 					<button v-on:click = "preview" type = "button" class = "btn btn-default">Save & Preview</button>
-	 					<button type = "button" class="btn btn-success">Push Changes</button>
+	 					<button v-on:click = "push" type = "button" class="btn btn-success">Push Changes</button>
 	 				</form>
 				</div>
 			</div>
@@ -64,6 +65,9 @@ Vue.component("navbar", {
 			});
 		},
 		methods: {
+			refresh: function() {
+				this.webContents.reload();
+			},
 			undo: function() {
 				this.webContents.undo();
 			},
@@ -76,6 +80,16 @@ Vue.component("navbar", {
 			preview: function()  {
 				this.save();
 				opn(`http://localhost:8080/${this.previewPage}`);
+			},
+			push: function() {
+				dialog.showMessageBox({
+				type: "warning",
+				buttons: ["Continue", "Cancel"],
+				title: "Confirm Push",
+				message: "Are you sure? Remember that all changes will be deployed live to the real website!"
+				}, (response) => {
+					if (!response) window.location.assign("push.html"); // Action was confirmed
+				});
 			}
 		},
 		data: () => {

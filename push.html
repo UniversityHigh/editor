@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href = "assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="assets/css/font-awesome.min.css">
+	<link rel = "stylesheet" href = "css/startup.css">
+	<script src = "assets/js/jquery.js" onload = "window.$ = window.jQuery = module.exports;"></script>
+	<script src = "assets/js/bootstrap.js"></script>
+	<script src = "assets/js/vue.js"></script>
+	<script src = "js/push.js" defer></script>
+	<style>
+		textarea {
+			height: 25vh !important;
+			width: 75vw !important;
+		}
+	</style>
+	<title>Editor</title>
+</head>
+<body>
+	<div id = "main">
+		<div class = "form-group" v-if = "!pushStarted">
+			<label for = "msg">Commit Message</label>
+			<textarea v-model = "commitMessage" id = "msg" class = "form-control" placeholder="Enter a short message to describe what changes were made. Your message must be at least 10 characters long."></textarea>
+			<br>
+			<button type = "button" v-on:click = "push()" class = "btn btn-lg btn-success" :class = "{'disabled': commitMessage.length < 10}">Begin Push</button>
+		</div>
+		<div v-else>
+			<div class = "fa-container">
+				<i class = "fa fa-spinner fa-5x fa-pulse"></i>
+			</div>
+			<p>{{status}}</p>
+		</div>
+	</body>
+	</html>

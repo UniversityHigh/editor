@@ -84,7 +84,7 @@
 							self.failure = JSON.parse(err.message).message;
 						}
 						else {
-							ipcRenderer.send("setCredentials", this.email, this.password);
+							ipcRenderer.send("setCredentials", this.email._value, this.password._value);
 							window.location.assign("startup.html");
 						}
 					});

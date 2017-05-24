@@ -160,6 +160,10 @@ class Backend {
 		fs.writeFile(this.localsPath, JSON.stringify(json, null, 2), (err) => callback(err)); // beautify w/ 2 tabs
 	}
 
+	getFile(filePath) {
+		return fs.readFileSync(path.join(this.repoPath, filePath));
+	}
+
 	compile(callback) {
 		if (!this.server) this.server = new harponica(this.harponicaPath);
 		this.server.compile(this.repoPath, callback);
