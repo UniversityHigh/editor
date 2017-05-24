@@ -22,7 +22,7 @@
 			<label for = "msg">Commit Message</label>
 			<textarea v-model = "commitMessage" id = "msg" class = "form-control" placeholder="Enter a short message to describe what changes were made. Your message must be at least 10 characters long."></textarea>
 			<br>
-			<button type = "button" v-on:click = "push()" class = "btn btn-lg btn-success" :class = "{'disabled': commitMessage.length < 10}">Begin Push</button>
+			<button type = "button" v-on:click = "commitMessage.length >= 10 && push" class = "btn btn-lg btn-success" :class = "{'disabled': commitMessage.length < 10}">Begin Push</button>
 		</div>
 		<div v-else>
 			<div class = "fa-container">
