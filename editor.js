@@ -72,4 +72,4 @@ app.on('activate', () => {
 	}
 });
 
-app.on("windows-all-closed", app.quit);
+app.on("window-all-closed", app.quit);
