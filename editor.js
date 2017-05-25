@@ -1,4 +1,4 @@
-const {app, BrowserWindow, ipcMain} = require("electron");
+const {app, BrowserWindow, ipcMain, globalShortcut} = require("electron");
 const path = require("path");
 const url = require("url");
 const backendModule = require("./backend");
@@ -58,7 +58,9 @@ function createWindow() {
 	});
 	win.loadURL(`file:///${__dirname}/login.html`);
 	win.setMenuBarVisibility(false);
-	win.webContents.openDevTools();
+	globalShortcut.register("F12", () => {
+		win.webContents.openDevTools();
+	});
 	win.on("closed", () => {
 		win = null;
 	});
