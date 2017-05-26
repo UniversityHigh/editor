@@ -16,39 +16,17 @@
 		<navbar preview-page = "information#resources"></navbar>
 		<div class = "container-fluid">
 			<json-form page = "information">
-				<json-string name = "Section Name" path = "['resources']['name']"></json-string>
-				<json-table
-					name = "Resources"
-					path = "['resources']['resources']"
-					:columns = "['url', 'name', 'description']">
-				</json-table>
-				<h3>Student Council</h3>
-				<h4>Grade 9</h4>
+				<h3>Grade 9</h3>
 				<json-string name = "Grade Name" path = "['resources']['studentCouncil']['grades'][0]['name']"></json-string>
 				<json-table
 					name = "Resources"
 					path = "['resources']['studentCouncil']['grades'][0]['resources']"
 					:columns = "['url', 'name', 'description']">
 				</json-table>
-				<h4>Grade 10</h4>
-				<json-string name = "Grade Name" path = "['resources']['studentCouncil']['grades'][1]['name']"></json-string>
+				<!-- <json-string name = "Section Name" path = "['resources']['name']"></json-string>
 				<json-table
 					name = "Resources"
-					path = "['resources']['studentCouncil']['grades'][1]['resources']"
-					:columns = "['url', 'name', 'description']">
-				</json-table>
-				<h4>Grade 11</h4>
-				<json-string name = "Grade Name" path = "['resources']['studentCouncil']['grades'][2]['name']"></json-string>
-				<json-table
-					name = "Resources"
-					path = "['resources']['studentCouncil']['grades'][2]['resources']"
-					:columns = "['url', 'name', 'description']">
-				</json-table>
-				<h4>Grade 12</h4>
-				<json-string name = "Grade Name" path = "['resources']['studentCouncil']['grades'][3]['name']"></json-string>
-				<json-table
-					name = "Resources"
-					path = "['resources']['studentCouncil']['grades'][3]['resources']"
+					path = "['resources']['resources']"
 					:columns = "['url', 'name', 'description']">
 				</json-table>
 			</json-form>

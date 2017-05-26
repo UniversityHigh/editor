@@ -33,7 +33,7 @@ Vue.component("navbar", {
 	 							<li-nk :from = "path" to = "lunchMenu.html" :paths = "paths"></li-nk>
 	 							<li-nk :from = "path" to = "parentOrganizations.html" :paths = "paths"></li-nk>
 	 							<li-nk :from = "path" to = "resources.html" :paths = "paths"></li-nk>
-	 							<li-nk :from = "path" to = "guidance.html" :paths = "paths"></li-nk>
+	 							<li-nk :from = "path" to = "studentCouncil.html" :paths = "paths"></li-nk>
 	 							<li class = "dropdown-header">Academics</li>
 	 							<li-nk :from = "path" to = "departments.html" :paths = "paths"></li-nk>
 	 							<li-nk :from = "path" to = "classes.html" :paths = "paths"></li-nk>
@@ -109,7 +109,7 @@ Vue.component("navbar", {
 					"lunchMenu.html": "Lunch Menu",
 					"parentOrganizations.html": "Parent Organizations",
 					"resources.html": "Resources",
-					"guidance.html": "Guidance",
+					"studentCouncil.html": "Student Council",
 					"departments.html": "Departments",
 					"classes.html": "Classes",
 					"clubs.html": "Clubs",
