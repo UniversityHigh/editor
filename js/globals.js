@@ -42,7 +42,7 @@ Vue.component("navbar", {
 	 							<li class = "dropdown-header">Prospective Students</li>
 	 							<li-nk :from = "path" to = "prospective.html" :paths = "paths"></li-nk>
 	 							<li class = "dropdown-header">Editor</li>
-	 							<li-nk :from = "path" to = "guide.html" :paths = "paths"></li-nk>
+	 							<li><a v-on:click = "openGuide">Advanced Guide</a></li>
 	 							<li-nk :from = "path" to = "fixIt.html" :paths = "paths"></li-nk>
 	 						</ul>
 	 					</li>
@@ -81,6 +81,9 @@ Vue.component("navbar", {
 				this.save();
 				opn(`http://localhost:8080/${this.previewPage}`);
 			},
+			openGuide: function() {
+				opn("https://github.com/UniversityHigh/universityhigh.github.io/blob/master/GUIDE.md");
+			},
 			push: function() {
 				dialog.showMessageBox({
 				type: "warning",
@@ -110,7 +113,6 @@ Vue.component("navbar", {
 					"clubs.html": "Clubs",
 					"athletics.html": "Athletics",
 					"prospective.html": "Applications & Open Houses",
-					"guide.html": "Advanced Guide",
 					"fixIt.html": "Fix Broken Repo"
 				}
 			}
