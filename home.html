@@ -27,6 +27,7 @@
 		<div class = "container-fluid">
 			<json-form page = "index">
 				<json-string name = "Name" id = "name" path = "['name']"></json-string>
+				<json-string name = "Phone Number" path = "['phoneNumber']"></json-string>
 				<json-repeat name = "Qualities" :path = "['qualities']">
 					<template scope = "parent">
 						<json-string name = "Name" :path = "`['qualities'][${parent.index}]['name']`"></json-string>
