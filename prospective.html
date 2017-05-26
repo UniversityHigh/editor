@@ -27,7 +27,7 @@
 				<json-string name = "Name" path = "['applications']['name']"></json-string>
 				<json-string name = "Lead" path = "['applications']['lead']"></json-string>
 				<json-string name = "Button Text" path = "['applications']['application']['buttonText']"></json-string>
-				<json-string name = "Month" path = "['applications']['application']['month']"></json-string>
+				<json-string name = "Month" path = "['applications']['application']['month']" help = "This should be abbreviated as it must fit on the button."></json-string>
 				<json-string name = "Day" path = "['applications']['application']['day']"></json-string>
 				<json-string name = "Link" path = "['applications']['application']['link']"></json-string>
 				<json-table
@@ -43,6 +43,7 @@
 				<json-string name = "Description" path = "['openHouse']['text']" big = true></json-string>
 				<json-table
 					name = "Dates"
+					help = "The link field is for specifying what will be opened if 'Reserve a seat' is clicked."
 					path = "['openHouse']['dates']"
 					:columns = "['name', 'date', 'time', 'link']">
 				</json-table>
