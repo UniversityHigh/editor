@@ -74,6 +74,6 @@ let vm = new Vue({
 		backend: null,
 		status: "Checking for repo on disk...",
 		updateAvailable: false,
-		failed: true
+		failed: false
 	}
 });

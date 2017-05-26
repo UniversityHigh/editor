@@ -1,4 +1,3 @@
-* Content-length issue
 * Help text for most components
 * Revert functionality
 * Way to change backend server port
