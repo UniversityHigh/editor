@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href = "assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href = "assets/css/font-awesome.min.css">
+	<link rel = "stylesheet" href = "css/global.css"> 
+	<script src = "assets/js/jquery.js" onload = "window.$ = window.jQuery = module.exports;"></script>
+	<script src = "assets/js/bootstrap.js"></script>
+	<script src = "assets/js/vue.js"></script>
+	<script src = "js/globals.js"></script>
+	<script src = "js/jumpstart.js" defer></script>
+	<style type = "text/css">
+		textarea {
+			height: 25vh !important;
+		}
+	</style>
+	<title>Editor</title>
+</head>
+<body>
+	<div id = "main">
+		<navbar preview-page = "counseling"></navbar>
+		<div class = "container-fluid">
+			<json-form page = "counseling">
+				<json-string name = "Overview" path = "['overview']" big = "true"></json-string>
+				<h3>Mission</h3>
+				<json-string name = "Name" path = "['mission']['name']"></json-string>
+				<json-string name = "Lead" path = "['mission']['lead']"></json-string>
+				<json-string name = "Statement" path = "['mission']['statement']" big = "true"></json-string>
+				<h3>Philosophy</h3>
+				<json-string name = "Text" path = "['philosophy']['text']"></json-string>
+				<json-simple-table
+					name = "Principles"
+					path = "['philosophy']['principles']">
+				</json-simple-table>
+				<h3>Links</h3>
+				<json-string name = "Name" path = "['links']['name']"></json-string>
+				<json-string name = "Lead" path = "['links']['lead']"></json-string>
+				<json-table
+					name = "Links"
+					path = "['links']['links']"
+					:columns = "['name', 'description', 'link']">
+				</json-table>
+				<h4>Freshmen</h4>
+				<json-string name = "Name" path = "['links']['grades'][0]['name']"></json-string>
+				<json-string name = "Link" path = "['links']['grades'][0]['link']"></json-string>
+				<h4>Sophomores</h4>
+				<json-string name = "Name" path = "['links']['grades'][1]['name']"></json-string>
+				<json-string name = "Link" path = "['links']['grades'][1]['link']"></json-string>
+				<h4>Juniors</h4>
+				<json-string name = "Name" path = "['links']['grades'][2]['name']"></json-string>
+				<json-string name = "Link" path = "['links']['grades'][2]['link']"></json-string>
+				<h4>Seniors</h4>
+				<json-string name = "Name" path = "['links']['grades'][3]['name']"></json-string>
+				<json-string name = "Link" path = "['links']['grades'][3]['link']"></json-string>
+				<h3>Graduation Requirements</h3>
+				<json-string name = "Name" path = "['graduationRequirements']['name']"></json-string>
+				<json-string name = "Lead" path = "['graduationRequirements']['lead']"></json-string>
+				<json-table
+					name = "Requirements"
+					path = "['graduationRequirements']['requirements']"
+					:columns = "['department', 'description', 'credits']">
+				</json-table>
+				<h3>Dates</h3>
+				<json-string name = "Name" path = "['dates']['name']"></json-string>
+				<json-string name = "Lead" path = "['dates']['lead']"></json-string>
+				<h4>SAT</h4>
+				<json-string name = "Link" path = "['dates']['sat']['link']"></json-string>
+				<json-simple-table
+					name = "Test Dates"
+					path = "['dates']['sat']['testDates']">
+				</json-simple-table>
+				<json-simple-table
+					name = "Registration Dates"
+					path = "['dates']['sat']['registrationDates']">
+				</json-simple-table>
+				<h4>ACT</h4>
+				<json-string name = "Link" path = "['dates']['act']['link']"></json-string>
+				<json-simple-table
+					name = "Test Dates"
+					path = "['dates']['act']['testDates']">
+				</json-simple-table>
+				<json-simple-table
+					name = "Registration Dates"
+					path = "['dates']['act']['registrationDates']">
+				</json-simple-table>
+			</json-form>
+		</div>
+	</div>
+</body>
+</html>

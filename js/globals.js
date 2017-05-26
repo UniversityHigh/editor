@@ -37,6 +37,8 @@ Vue.component("navbar", {
 	 							<li class = "dropdown-header">Academics</li>
 	 							<li-nk :from = "path" to = "departments.html" :paths = "paths"></li-nk>
 	 							<li-nk :from = "path" to = "classes.html" :paths = "paths"></li-nk>
+	 							<li class = "dropdown-header">Counseling</li>
+	 							<li-nk :from = "path" to = "counseling.html" :paths = "paths"></li-nk>
 	 							<li class = "dropdown-header">Extracurriculars</li>
 	 							<li-nk :from = "path" to = "athletics.html" :paths = "paths"></li-nk>
 	 							<li-nk :from = "path" to = "clubs.html" :paths = "paths"></li-nk>
@@ -112,6 +114,7 @@ Vue.component("navbar", {
 					"resources.html": "Resources",
 					"departments.html": "Departments",
 					"classes.html": "Classes",
+					"counseling.html": "Counseling",
 					"clubs.html": "Clubs",
 					"athletics.html": "Athletics",
 					"prospective.html": "Applications & Open Houses",

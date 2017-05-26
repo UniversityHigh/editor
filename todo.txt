@@ -1,12 +1,4 @@
 * Help text for most components
 * Revert functionality
 * Way to change backend server port
-### Pages that need to be done
-* Alumni
-* Guidance
 * Fall and Winter sections for sports
-* SGC
-* Student Council
-* Resources
-* changes.json
-* Google Form for alumni
