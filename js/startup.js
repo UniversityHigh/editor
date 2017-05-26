@@ -22,13 +22,15 @@ let vm = new Vue({
 			});
 			ipcRenderer.on("updateCheckFailed", (event, err) => {
 				this.status = `Failed to check for updates with error: ${err}. Try restarting the application and check your Internet connection.`;
+				this.failed = true;
 			});
 		}
 		else {
 			this.status = "No repo on disk. Downloading...";
 			ipcRenderer.send("fetchRepo");
 			ipcRenderer.on("fetchRepoErr", (event, err) => {
-				this.status = `Couldn't download the repo due to an error: ${err}. Try restarting the application.`;
+				this.status = `Couldn't download the repo due to an error: ${err}.`;
+				this.failed = true;
 			})
 			ipcRenderer.on("fetchRepoProgress", (event, currentBytes, totalBytes) => {
 				let percentage = ((currentBytes / totalBytes) * 100).toFixed(0);
@@ -48,6 +50,7 @@ let vm = new Vue({
 			ipcRenderer.on("deletedRepo", (event, err) => {
 				if (err) {
 					this.status = "Failed to delete repo on disk. Try restarting the application.";
+					this.failed = true;
 				}
 				else {
 					this.status = "Repo deleted.";
@@ -62,11 +65,15 @@ let vm = new Vue({
 			ipcRenderer.on("serverStarted", (event) => {
 				window.location.assign(nextPage);
 			});
+		},
+		reload: function() {
+			window.location.assign(currentPage);
 		}
 	},
 	data: {
 		backend: null,
 		status: "Checking for repo on disk...",
-		updateAvailable: false
+		updateAvailable: false,
+		failed: true
 	}
 });

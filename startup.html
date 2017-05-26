@@ -17,10 +17,13 @@
 			<i v-else class = "fa fa-question fa-5x"></i>
 		</div>
 		<p>{{status}}</p>
+		<a v-if = "failed" v-on:click = "reload" class = "btn btn-default btn-lg">
+		<i class = "fa fa-refresh"></i>	Try Again
+		</a>
 		<div v-if = "updateAvailable" class = "container-fluid">
 			<p>An update is available. You can choose to update now or later. Note that updating now may result in you losing any local changes (i.e. anything that hasn't been made live yet). However, if you do not update now you may overwrite any changes someone else has made to the website. <b>It is recommended to update now.</b></p>
-			<a v-on:click = "prepareForNextPage" class = "btn btn-danger btn-large">Update Later</a>
-			<a v-on:click = "updateNow" class = "btn btn-success btn-large">Update Now</a>
+			<a v-on:click = "prepareForNextPage" class = "btn btn-danger btn-lg">Update Later</a>
+			<a v-on:click = "updateNow" class = "btn btn-success btn-lg">Update Now</a>
 		</div>
 	</div>
 </body>

@@ -1,5 +1,4 @@
 * Content-length issue
-* Push changes
 * Help text for most components
 * Revert functionality
 * Way to change backend server port
@@ -10,3 +9,5 @@
 * SGC
 * Student Council
 * Resources
+* changes.json
+* Google Form for alumni

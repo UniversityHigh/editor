@@ -89,7 +89,7 @@ class Backend {
 		let totalBytes = 0;
 		request.on("response", (res) => {
 			if (!("content-length" in res.headers)) {
-				return errCallback("No content-length!");
+				return errCallback("No content-length");
 			}
 		 	totalBytes = res.headers["content-length"][0];
 			res.on("data", (data) => {
