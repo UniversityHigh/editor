@@ -46,6 +46,7 @@ Vue.component("navbar", {
 	 							<li-nk :from = "path" to = "prospective.html" :paths = "paths"></li-nk>
 	 							<li class = "dropdown-header">Editor</li>
 	 							<li><a v-on:click = "openGuide">Advanced Guide</a></li>
+	 							<li-nk :from = "path" to = "revisions.html" :paths = "paths"></li-nk>
 	 							<li-nk :from = "path" to = "fixIt.html" :paths = "paths"></li-nk>
 	 						</ul>
 	 					</li>
