@@ -18,44 +18,26 @@
 			<json-form page = "extracurriculars">
 				<json-string name = "Section Name" path = "['athletics']['name']"></json-string>
 				<json-string name = "Section Lead" path = "['athletics']['lead']"></json-string>
-				<h1>Sports</h1>
-				<h3>Spring</h3>
-				<json-repeat name = "Sports" path = "['athletics']['seasons'][0]['sports']">
+				<h1>Seasons</h1>
+				<json-repeat name = "Sports" path = "['athletics']['seasons']">
 					<template scope = "parent">
-						<json-string name = "Name" :path = "`['athletics']['seasons'][0]['sports'][${parent.index}]['name']`"></json-string>
-						<div class = "well">
-							<json-table 
-								name = "Coaches" 
-								:path = "`['athletics']['seasons'][0]['sports'][${parent.index}]['coaches']`"
-								:columns = "['name', 'league']">
-							</json-table>
-							<json-table 
-								name = "Schedules" 
-								:path = "`['athletics']['seasons'][0]['sports'][${parent.index}]['schedules']`"
-								help = "Nav should be a URL."
-								:columns = "['name', 'nav']">
-							</json-table>
-						</div>
-					</template>
-				</json-repeat>
-				<br>
-				<h3>Summer</h3>
-				<json-repeat name = "Sports" path = "['athletics']['seasons'][1]['sports']">
-					<template scope = "parent">
-						<json-string name = "Name" :path = "`['athletics']['seasons'][1]['sports'][${parent.index}]['name']`"></json-string>
-						<div class = "well">
-							<json-table 
-								name = "Coaches" 
-								:path = "`['athletics']['seasons'][1]['sports'][${parent.index}]['coaches']`"
-								:columns = "['name', 'league']">
-							</json-table>
-							<json-table 
-								name = "Schedules" 
-								:path = "`['athletics']['seasons'][1]['sports'][${parent.index}]['schedules']`"
-								help = "Nav should be a URL."
-								:columns = "['name', 'nav']">
-							</json-table>
-						</div>
+						<json-string name = "Name" :path = "`['athletics']['seasons'][${parent.index}]['name']`"></json-string>
+						<json-repeat name = "Sports" :path = "`['athletics']['seasons'][${parent.index}]['sports']`">
+							<template scope = "subparent">
+								<json-string name = "Name" :path = "`['athletics']['seasons'][${parent.index}]['sports'][${subparent.index}]['name']`"></json-string>
+								<json-table 
+									name = "Coaches" 
+									:path = "`['athletics']['seasons'][${parent.index}]['sports'][${subparent.index}]['coaches']`"
+									:columns = "['name', 'league']">
+								</json-table>
+								<json-table 
+									name = "Schedules" 
+									:path = "`['athletics']['seasons'][${parent.index}]['sports'][${subparent.index}]['schedules']`"
+									help = "Nav should be a URL."
+									:columns = "['name', 'nav']">
+								</json-table>
+							</template>
+						</json-repeat>
 					</template>
 				</json-repeat>
 			</json-form>
