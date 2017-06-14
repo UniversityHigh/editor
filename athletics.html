@@ -19,7 +19,7 @@
 				<json-string name = "Section Name" path = "['athletics']['name']"></json-string>
 				<json-string name = "Section Lead" path = "['athletics']['lead']"></json-string>
 				<h1>Seasons</h1>
-				<json-repeat name = "Sports" path = "['athletics']['seasons']">
+				<json-repeat path = "['athletics']['seasons']">
 					<template scope = "parent">
 						<json-string name = "Name" :path = "`['athletics']['seasons'][${parent.index}]['name']`"></json-string>
 						<json-repeat name = "Sports" :path = "`['athletics']['seasons'][${parent.index}]['sports']`">
