@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href = "assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href = "assets/css/font-awesome.min.css">
+	<link rel = "stylesheet" href = "css/global.css"> 
+	<script src = "assets/js/jquery.js" onload = "window.$ = window.jQuery = module.exports;"></script>
+	<script src = "assets/js/bootstrap.js"></script>
+	<script src = "assets/js/vue.js"></script>
+	<script src = "js/globals.js"></script>
+	<script src = "js/jumpstart.js" defer></script>
+	<title>Editor</title>
+</head>
+<body>
+	<div id = "main">
+		<navbar preview-page = "extracurriculars#highlights"></navbar>
+		<div class = "container-fluid">
+			<json-form page = "extracurriculars">
+				<json-string name = "Section Name" path = "['highlights']['name']"></json-string>
+                <json-string name = "Section Lead" path = "['highlights']['lead']"></json-string>
+                <json-repeat name = "Gallery" path = "['highlights']['gallery']">
+					  <template scope = "parent">
+						<json-string name = "External Link" :path = "`['highlights']['gallery'][${parent.index}]['link']`" help = "This is the page that is opened when the image is clicked."></json-string>
+						<json-string name = "Image Link" :path = "`['highlights']['gallery'][${parent.index}]['src']`" help = "This is the actual link to the image."></json-string>
+						<json-string name = "Caption" :path = "`['highlights']['gallery'][${parent.index}]['caption']`" big = "true"></json-string>
+					</template>  
+				</json-repeat>
+			</json-form>
+		</div>
+	</div>
+</body>
+</html>

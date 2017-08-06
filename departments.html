@@ -10,6 +10,13 @@
 	<script src = "js/globals.js"></script>
 	<script src = "js/jumpstart.js" defer></script>
 	<script>
+		// https://stackoverflow.com/a/2970667
+		function camelize(str) {
+			return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function(match, index) {
+				if (+match === 0) return ""; // or if (/\s+/.test(match)) for white spaces
+				return index == 0 ? match.toLowerCase() : match.toUpperCase();
+			});
+		}
 		bus.$on("save", () => {
 			let departmentsJSON = vm.$children[1].rootJson.departments.departments;
 			let names = departmentsJSON.map((department) => department.name);
@@ -18,7 +25,7 @@
 				let name = names[i];
 				sublinks.push({
 					"name": name,
-					"nav": name.toLowerCase().trim().replace(/\s/g, "")
+					"nav": camelize(name)
 				});
 			}
 			let globalsJSON = ipcRenderer.sendSync("getJSONForPage", "globals");
@@ -41,7 +48,7 @@
 			<json-form page = "academics">
 				<json-string name = "Section Name" path = "['departments']['name']"></json-string>
 				<json-string name = "Section Lead" path = "['departments']['lead']"></json-string>
-				<json-repeat name = "Departments" path = "['departments']['departments']">
+				<json-repeat name = "Departments" path = "['departments']['departments']" help="Please do not include any special characters in department names (&, +, /, \, etc.) as this prevents most browsers from navigating to the desired section from the dropdown menu in the navbar.">
 					<template scope = "parent">
 						<json-string name = "Name" :path = "`['departments']['departments'][${parent.index}]['name']`"></json-string>
 						<json-string name = "Lead" :path = "`['departments']['departments'][${parent.index}]['lead']`"></json-string>
