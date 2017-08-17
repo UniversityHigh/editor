@@ -18,6 +18,12 @@
 			<json-form page = "extracurriculars">
 				<json-string name = "Section Name" path = "['athletics']['name']"></json-string>
 				<json-string name = "Section Lead" path = "['athletics']['lead']"></json-string>
+				<h1>Resources</h1>
+				<json-table
+					name = "Links"
+					path = "['athletics']['links']"
+					:columns = "['name', 'description', 'link']">
+				</json-table>
 				<h1>Seasons</h1>
 				<json-repeat path = "['athletics']['seasons']">
 					<template scope = "parent">
